@@ -1,0 +1,77 @@
+[2026-05-13T14:29:35.596Z] INFO: Recording started: 35cedfb1-7193-470c-9084-27e849c9e461 {"sessionId":"dashboard-session","url":"https://example.com"}
+[2026-05-13T14:29:36.457Z] INFO: 🎥 Playwright browser launched
+[2026-05-13T14:31:20.189Z] INFO: Recording started: 92203c63-7b60-43d9-8c27-9e659af63fc8 {"sessionId":"dashboard-session","url":"https://example.com"}
+[2026-05-13T14:31:20.758Z] INFO: 🎥 Playwright browser launched
+[2026-05-13T14:31:58.705Z] INFO: Recording started: 8581ca65-6384-4dac-92a5-6e9ee4ac0342 {"sessionId":"dashboard-session","url":"https://example.com"}
+[2026-05-13T14:31:59.282Z] INFO: 🎥 Playwright browser launched
+[2026-05-13T14:40:19.008Z] INFO: Recording started: 6dec924a-9d2b-4975-abc0-69bda2b2f755 {"sessionId":"dashboard-session","url":"https://example.com"}
+[2026-05-13T14:40:20.067Z] INFO: 🎥 Playwright browser launched
+[2026-05-13T14:47:36.414Z] INFO: Recording started: 888a0fa7-87c5-44c7-bd38-3e71dc1ddd1f {"sessionId":"dashboard-session","url":"https://example.com"}
+[2026-05-13T14:47:37.116Z] INFO: 🎥 Playwright browser launched
+[2026-05-13T14:53:25.676Z] INFO: Recording started: f13ffdcd-3816-43b7-996d-42129af334cd {"sessionId":"dashboard-session","url":"https://example.com"}
+[2026-05-13T14:53:26.275Z] INFO: 🎥 Playwright browser launched
+[2026-05-13T14:55:51.588Z] INFO: Recording started: f1c4f2af-6c9b-4298-b360-dc54c8bb9215 {"sessionId":"dashboard-session","url":"https://example.com"}
+[2026-05-13T14:55:52.409Z] INFO: 🎥 Playwright browser launched
+[2026-05-13T14:59:34.516Z] INFO: Recording started: 3471331d-6085-4db3-b8ec-3261222fa2fb {"sessionId":"dashboard-session","url":"https://demoqa.com"}
+[2026-05-13T14:59:36.825Z] INFO: 🎥 Playwright browser launched
+[2026-05-13T15:07:25.753Z] INFO: Recording started: 8ce50b58-d0e9-465b-b764-775089d9b4be {"sessionId":"dashboard-session","url":"http://localhost:5000/test.html"}
+[2026-05-13T15:07:26.144Z] INFO: 🎥 Playwright browser launched
+[2026-05-13T15:15:09.552Z] INFO: Recording started: f8b7c756-471a-4213-9068-7b5d38d56238 {"sessionId":"dashboard-session","url":"http://localhost:5000/test.html"}
+[2026-05-13T15:15:10.019Z] INFO: 🎥 Playwright browser launched
+[2026-05-13T15:26:11.437Z] INFO: Recording started: 9086e4cb-8c6e-4de9-bd34-a0a1178938d9 {"sessionId":"dashboard-session","url":"http://localhost:5000/test.html"}
+[2026-05-13T15:26:11.928Z] INFO: 🎥 Playwright browser launched
+[2026-05-13T15:27:48.732Z] INFO: Generated Playwright code for 2 events
+[2026-05-13T15:40:49.944Z] INFO: Recording started: 00761b33-4992-43d4-9ddb-81326d457788 {"sessionId":"dashboard-session","url":"http://localhost:5000/test.html"}
+[2026-05-13T15:40:50.439Z] INFO: 🎥 Playwright browser launched
+[2026-05-13T15:43:45.651Z] INFO: Generated Playwright code for 0 events
+[2026-05-13T15:51:44.717Z] INFO: Recording started: 85924fb5-17b3-4dc3-8e76-dca7001c8f59 {"sessionId":"dashboard-session","url":"http://localhost:5000/test.html"}
+[2026-05-13T15:51:45.209Z] INFO: 🎥 Playwright browser launched
+[2026-05-13T15:52:23.645Z] INFO: Generated Playwright code for 1 events
+[2026-05-13T16:03:17.229Z] INFO: Recording started: 203ee642-a58a-475c-a474-eb61baeeb033 {"sessionId":"dashboard-session","url":"http://localhost:5000/test.html"}
+[2026-05-13T16:03:17.714Z] INFO: 🎥 Playwright browser launched
+[2026-05-13T16:03:56.074Z] INFO: Generated Playwright code for 3 events
+[2026-05-13T16:16:23.149Z] INFO: Recording started: 988022fd-ed51-436a-a138-275cadc09810 {"sessionId":"dashboard-session","url":"http://localhost:5000/test.html"}
+[2026-05-13T16:16:23.678Z] INFO: 🎥 Playwright browser launched
+[2026-05-13T16:16:55.808Z] INFO: Generated Playwright code for 3 events
+[2026-05-14T05:44:29.704Z] INFO: Recording started: 1a347274-5a3d-439b-adfa-0ac5f91bfcb7 {"sessionId":"dashboard-session","url":"http://localhost:5000/test.html"}
+[2026-05-14T05:44:30.400Z] INFO: 🎥 Playwright browser launched
+[2026-05-14T05:51:01.824Z] INFO: Generated Playwright code for 2 events
+[2026-05-14T05:54:05.383Z] INFO: Generated Playwright code for 2 events
+[2026-05-14T06:04:05.758Z] INFO: Generated Playwright code for 2 events
+[2026-05-14T06:04:34.644Z] INFO: Recording started: 2004589f-3257-4aa2-acb4-7fc935a29d40 {"sessionId":"dashboard-session","url":"http://localhost:5000/test.html"}
+[2026-05-14T06:04:35.090Z] INFO: 🎥 Playwright browser launched
+[2026-05-14T06:05:03.834Z] INFO: Generated Playwright code for 2 events
+[2026-05-14T06:16:00.805Z] INFO: Generated Playwright code for 2 events
+[2026-05-14T06:24:44.911Z] INFO: Recording started: e0b7c6e6-8aed-4d4b-a2e1-6cb386a473a7 {"sessionId":"dashboard-session","url":"http://localhost:5000/test.html"}
+[2026-05-14T06:24:45.338Z] INFO: 🎥 Playwright browser launched
+[2026-05-14T06:25:36.826Z] INFO: Generated Playwright code for 2 events
+[2026-05-14T06:54:45.332Z] INFO: Recording started: 956d16e0-fbde-4ae1-8060-6a3a7ac168a2 {"sessionId":"dashboard-session","url":"http://localhost:5000/test.html"}
+[2026-05-14T06:54:45.767Z] INFO: 🎥 Playwright browser launched
+[2026-05-14T06:55:44.965Z] INFO: Generated Playwright code for 2 events
+[2026-05-14T06:59:11.814Z] INFO: Recording started: 1a99eab4-3d02-4a52-9221-b61726368b66 {"sessionId":"dashboard-session","url":"http://localhost:5000/test.html"}
+[2026-05-14T06:59:12.185Z] INFO: 🎥 Playwright browser launched
+[2026-05-14T06:59:48.872Z] INFO: Recording started: a2b5e392-d344-4f8a-a7a2-39dbe97ef3f0 {"sessionId":"dashboard-session","url":"http://localhost:5000/test.html"}
+[2026-05-14T06:59:49.233Z] INFO: 🎥 Playwright browser launched
+[2026-05-14T07:00:26.041Z] INFO: Generated Playwright code for 2 events
+[2026-05-14T07:09:07.936Z] INFO: Recording started: 14651dde-0b13-48e4-879a-bdd5748239f9 {"sessionId":"dashboard-session","url":"http://localhost:5000/test.html"}
+[2026-05-14T07:09:08.298Z] INFO: 🎥 Playwright browser launched
+[2026-05-14T07:09:30.431Z] INFO: Recording started: 8e7b9573-0339-4193-bb70-a53609a12484 {"sessionId":"dashboard-session","url":"http://localhost:5000/test.html"}
+[2026-05-14T07:09:30.750Z] INFO: 🎥 Playwright browser launched
+[2026-05-14T07:10:00.190Z] INFO: Generated Playwright code for 2 events
+[2026-05-14T07:34:50.839Z] INFO: Recording started: 78d816d1-95a3-4635-835a-d93f32716984 {"sessionId":"dashboard-session","url":"http://localhost:5000/test.html"}
+[2026-05-14T07:34:51.214Z] INFO: 🎥 Playwright browser launched
+[2026-05-14T07:35:35.534Z] INFO: Generated Playwright code for 2 events
+[2026-05-14T07:36:22.276Z] INFO: Recording started: 5c4cab90-179a-48e2-bdc3-9b881751aab2 {"sessionId":"dashboard-session","url":"http://localhost:5000/test.html"}
+[2026-05-14T07:36:22.597Z] INFO: 🎥 Playwright browser launched
+[2026-05-14T07:36:50.243Z] INFO: Generated Playwright code for 2 events
+[2026-05-14T07:42:57.140Z] INFO: Recording started: 7bd48baf-9600-474d-a46f-8a3f81cf474e {"sessionId":"dashboard-session","url":"http://localhost:5000/test.html"}
+[2026-05-14T07:42:57.732Z] INFO: 🎥 Playwright browser launched
+[2026-05-14T07:43:35.625Z] INFO: Generated Playwright code for 2 events
+[2026-05-14T07:46:07.735Z] INFO: Recording started: c79389f4-d99b-4374-ae3e-a7473a3c2aa9 {"sessionId":"dashboard-session","url":"http://localhost:5000/test.html"}
+[2026-05-14T07:46:09.535Z] INFO: 🎥 Playwright browser launched
+[2026-05-14T07:46:44.561Z] INFO: Generated Playwright code for 2 events
+[2026-05-14T09:57:34.336Z] INFO: Recording started: f52675ef-397a-4a02-93e0-b4bffd264cdb {"sessionId":"dashboard-session","url":"http://localhost:5000/test.html"}
+[2026-05-14T09:57:34.707Z] INFO: 🎥 Playwright browser launched
+[2026-05-14T09:57:46.311Z] INFO: Recording started: 38e28625-9646-402b-852a-a1796f401940 {"sessionId":"dashboard-session","url":"http://localhost:5000/test.html"}
+[2026-05-14T09:57:46.648Z] INFO: 🎥 Playwright browser launched
+[2026-05-14T09:58:29.645Z] INFO: Generated Playwright code for 2 events

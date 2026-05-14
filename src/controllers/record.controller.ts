@@ -1,0 +1,71 @@
+import { Request, Response } from "express";
+import { v4 as uuid } from "uuid";
+import prisma from "../config/database";
+import { Recording } from "@prisma/client";
+import recorderService from "../services/recorder/recorder.service";
+
+export async function createRecording(req: Request, res: Response) {
+  const { events, sessionId } = req.body;
+
+  if (!events || !Array.isArray(events))
+    return res
+      .status(400)
+      .json({ success: false, message: "events array required" });
+
+  // persist to database
+  const created = await prisma.recording.create({
+    data: {
+      id: uuid(),
+      sessionId: sessionId || null,
+      events: JSON.stringify(events),
+    },
+  });
+
+  return res.status(201).json({
+    success: true,
+    data: {
+      ...created,
+      events: JSON.parse(created.events),
+    },
+  });
+}
+
+export async function listRecordings(_req: Request, res: Response) {
+  const recs = await prisma.recording.findMany({
+    orderBy: { createdAt: "desc" },
+  });
+
+  return res.status(200).json({
+    success: true,
+    data: recs.map((recording: Recording) => ({
+      ...recording,
+      events: JSON.parse(recording.events),
+    })),
+  });
+}
+
+export async function startRecording(req: Request, res: Response) {
+  try {
+    const { sessionId, url } = req.body;
+
+    const recordingId = await recorderService.startRecording(sessionId, url);
+
+    return res.status(200).json({
+      success: true,
+      recordingId,
+    });
+  } catch (error: any) {
+    console.error(error);
+
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+}
+
+export default {
+  createRecording,
+  listRecordings,
+  startRecording,
+};
