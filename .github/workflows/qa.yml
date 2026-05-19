@@ -27,6 +27,9 @@ jobs:
       - name: Generate Prisma Client
         run: npx prisma generate
 
+      - name: Fix Playwright Permission
+        run: chmod +x node_modules/.bin/playwright
+
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
