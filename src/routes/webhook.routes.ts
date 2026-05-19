@@ -4,6 +4,7 @@ import prisma from "../config/database";
 const router = Router();
 
 router.post("/github", async (req, res) => {
+
     try {
 
         const event =
@@ -17,7 +18,8 @@ router.post("/github", async (req, res) => {
 
         console.log(
             "WORKFLOW:",
-            payload.workflow?.name
+            payload.workflow?.name ||
+            payload.workflow_run?.name
         );
 
         console.log(
@@ -32,53 +34,91 @@ router.post("/github", async (req, res) => {
 
         console.log("===========");
 
-        const workflowRun = payload.workflow_run;
+        /**
+         * ONLY HANDLE workflow_run EVENTS
+         */
+        if (event !== "workflow_run") {
+
+            return res.status(200).json({
+
+                success: true,
+
+                message:
+                    "Event ignored",
+            });
+        }
+
+        const workflowRun =
+            payload.workflow_run;
 
         if (!workflowRun) {
+
             return res.status(400).json({
+
                 success: false,
-                message: "No workflow_run payload",
+
+                message:
+                    "No workflow_run payload",
             });
         }
 
-        const recording = await prisma.recording.findFirst();
+        /**
+         * FIND RECORDING
+         */
+        const recording =
+            await prisma.recording.findFirst();
 
         if (!recording) {
+
             return res.status(404).json({
+
                 success: false,
-                message: "No recording found",
+
+                message:
+                    "No recording found",
             });
         }
 
+        /**
+         * SAVE EXECUTION
+         */
         await prisma.testExecution.create({
+
             data: {
 
-                recordingId: recording.id,
+                recordingId:
+                    recording.id,
 
                 status:
                     workflowRun.conclusion === "success"
                         ? "PASSED"
-                        : "FAILED",
+                        : workflowRun.conclusion === "failure"
+                            ? "FAILED"
+                            : "RUNNING",
 
                 healedCount: 0,
 
                 duration:
                     workflowRun.run_started_at &&
-                        workflowRun.updated_at
+                    workflowRun.updated_at
                         ? (
                             new Date(workflowRun.updated_at).getTime() -
                             new Date(workflowRun.run_started_at).getTime()
                         ) / 1000
                         : 0,
 
-                logs: JSON.stringify(payload),
+                logs:
+                    workflowRun.display_title ||
+                    JSON.stringify(payload),
 
-                provider: "GitHub Actions",
+                provider:
+                    "GitHub Actions",
 
                 branch:
                     workflowRun.head_branch || "main",
 
-                environment: "production",
+                environment:
+                    "production",
 
                 repository:
                     payload.repository?.full_name || "",
@@ -90,13 +130,26 @@ router.post("/github", async (req, res) => {
                     workflowRun.actor?.login || "",
 
                 commitMessage:
-                    workflowRun.head_commit?.message || "",
+                    workflowRun.head_commit?.message ||
+                    workflowRun.display_title ||
+                    "",
+
+                commitHash:
+                    workflowRun.head_sha || "",
+
+                buildNumber:
+                    workflowRun.run_number
+                        ? workflowRun.run_number.toString()
+                        : "",
             },
         });
 
-        console.log("✅ GitHub webhook saved");
+        console.log(
+            "✅ GitHub webhook saved"
+        );
 
-        res.json({
+        return res.json({
+
             success: true,
         });
 
@@ -104,8 +157,12 @@ router.post("/github", async (req, res) => {
 
         console.error(error);
 
-        res.status(500).json({
+        return res.status(500).json({
+
             success: false,
+
+            message:
+                "Webhook processing failed",
         });
     }
 });
