@@ -29,7 +29,7 @@ router.post("/github", async (req, res) => {
     await prisma.testExecution.create({
       data: {
 
-        recordingId: "10f84b30-5376-11f1-9f4f-493e473e5276",
+        recordingId: recording.id,
 
         status:
           workflowRun.conclusion === "success"
