@@ -7,18 +7,9 @@ on:
 
 jobs:
   ai-qa-test:
-
     runs-on: ubuntu-latest
 
-    env:
-      CI_PROVIDER: GitHub Actions
-      GIT_BRANCH: ${{ github.ref_name }}
-      GIT_COMMIT: ${{ github.sha }}
-      BUILD_NUMBER: ${{ github.run_number }}
-      NODE_ENV: production
-
     steps:
-
       - name: Checkout Repository
         uses: actions/checkout@v4
 
@@ -29,12 +20,14 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          npm install --ignore-scripts
+          npm install
           chmod +x node_modules/.bin/prisma
-          npx prisma generate
+
+      - name: Generate Prisma Client
+        run: npx prisma generate
 
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
       - name: Run AI QA Tests
-        run: npx playwright test
+        run: npm test
