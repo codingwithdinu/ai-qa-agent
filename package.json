@@ -4,7 +4,7 @@
 	"description": "AI QA Automation Tool backend",
 	"main": "dist/server.js",
 	"scripts": {
-		"postinstall": "prisma generate",
+		"postinstall": "npx prisma generate",
 		"predev": "prisma generate && prisma db push",
 		"prestart": "prisma generate && prisma db push",
 		"build": "tsc -p tsconfig.json",
