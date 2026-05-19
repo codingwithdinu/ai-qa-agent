@@ -3,8 +3,7 @@ import { v4 as uuid } from "uuid";
 import prisma from "../config/database";
 import { Recording } from "@prisma/client";
 import recorderService from "../services/recorder/recorder.service";
-
-
+import { io } from "../server";
 interface AuthRequest
   extends Request {
   userId?: string;
@@ -40,6 +39,11 @@ export async function createRecording(req: AuthRequest, res: Response) {
           req.body.workspaceId,
       },
     });
+
+  io.emit("dashboard-updated");
+
+
+
   return res.status(201).json({
     success: true,
     data: {
@@ -47,12 +51,15 @@ export async function createRecording(req: AuthRequest, res: Response) {
       events: JSON.parse(created.events),
     },
   });
+
+
+
 }
 
 export async function listRecordings(req: AuthRequest, res: Response) {
 
   console.log("USER ID:", req.userId);
-  
+
   const recs =
     await prisma.recording.findMany({
       where: {
@@ -83,6 +90,9 @@ export async function startRecording(req: AuthRequest, res: Response) {
       url,
       workspaceId
     } = req.body;
+
+
+
 
 
     if (!workspaceId) {
@@ -116,6 +126,9 @@ export async function startRecording(req: AuthRequest, res: Response) {
         workspaceId
       );
 
+    io.emit("dashboard-updated");
+
+
     return res.status(200).json({
       success: true,
       recordingId,
@@ -142,6 +155,8 @@ export async function stopRecording(req: AuthRequest, res: Response) {
       await recorderService.stopRecording(
         recordingId
       );
+
+    io.emit("dashboard-updated");
     /**
      * Auto generate + execute test
      * in background

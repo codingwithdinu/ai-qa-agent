@@ -209,7 +209,10 @@ router.post("/github", async (req, res) => {
                 "✅ New workflow execution saved"
             );
 
-            
+
+            io.emit("dashboard-updated");
+
+
             io.emit("pipeline-updated", {
 
                 status:

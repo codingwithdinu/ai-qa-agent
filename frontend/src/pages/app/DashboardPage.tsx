@@ -1,26 +1,8 @@
-import {
-    getExecutions,
-    executeTest,
-    getAnalytics
-} from "../../services/dashboard.service";
+import { getExecutions, executeTest, getAnalytics } from "../../services/dashboard.service";
 import { motion } from 'framer-motion'
 import { ActivitySquare, ArrowUpRight, Bot, Clock4, GitBranchPlus, ShieldCheck } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import {
-    Area,
-    AreaChart,
-    Bar,
-    BarChart,
-    CartesianGrid,
-    Cell,
-    Pie,
-    PieChart,
-    ResponsiveContainer,
-    Tooltip,
-    XAxis,
-    YAxis,
-} from 'recharts'
-
+import { Area, AreaChart, Bar, BarChart, CartesianGrid, Cell, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis, } from 'recharts'
 import { ActionButton } from '../../components/ui/ActionButton'
 import { ChartCard } from '../../components/ui/ChartCard'
 import { GlassPanel } from '../../components/ui/GlassPanel'
@@ -32,6 +14,9 @@ import type { ActivityItem, HealingTrendPoint, MetricCardData, PieDatum, Timelin
 import { RecordingModal } from "../../components/modals/RecordingModal";
 import { useToast } from '../../context/ToastContext'
 import api from "../../api/client";
+import { socket } from "../../services/socket";
+
+
 
 
 interface DashboardDataState {
@@ -138,10 +123,25 @@ export function DashboardPage() {
 
 
     useEffect(() => {
+        loadExecutions();
+        socket.on(
+            "dashboard-updated",
+            () => {
+                console.log(
+                    "📊 Dashboard updated"
+                );
 
-        loadExecutions()
+                loadExecutions();
+            }
+        );
+        return () => {
+            socket.off(
+                "dashboard-updated"
+            );
+        };
+    }, []);
 
-    }, [])
+    
 
     async function loadExecutions() {
 

@@ -5,6 +5,7 @@ import { v4 as uuid } from "uuid";
 import { chromium, Browser, Page } from "playwright";
 import fs from "fs";
 import path from "path";
+import { Server } from "socket.io";
 
 
 let browser: Browser | null = null;
