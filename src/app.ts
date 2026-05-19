@@ -25,6 +25,10 @@ import cookieParser from "cookie-parser";
 import dashboardRoutes from "./routes/dashboard.routes";
 import healingRoutes from "./routes/healing.routes";
 import resultsRoutes from "./routes/results.routes";
+import githubRoutes from "./routes/github.routes";
+import webhookRoutes from "./routes/webhook.routes";
+
+
 
 
 const app: Application = express();
@@ -141,6 +145,8 @@ app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/healing", healingRoutes);
 app.use("/api/test-results", resultsRoutes);
 app.use("/test-results", express.static(path.resolve("test-results")));
+app.use("/api/github", githubRoutes);
+app.use("/api/webhooks", webhookRoutes);
 
 
 app.get("/api/state", async (_req: Request, res: Response) => {

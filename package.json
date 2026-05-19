@@ -18,7 +18,9 @@
 	"license": "MIT",
 	"dependencies": {
 		"@google/generative-ai": "^0.24.1",
+		"@ngrok/ngrok": "^1.7.0",
 		"@prisma/client": "^5.5.0",
+		"axios": "^1.16.1",
 		"bcryptjs": "^3.0.3",
 		"cookie-parser": "^1.4.7",
 		"cors": "^2.8.6",
