@@ -1,32 +1,282 @@
+import { healingHistory } from "./healingStore";
+
 export async function findBestSelector(
   page: any,
   failedSelector: string
 ): Promise<string | null> {
 
+  const blockedSelectors = [
+    "svg",
+    "div",
+    "span",
+    "p",
+    "path",
+    "section",
+    "body",
+  ];
+
+  if (
+    blockedSelectors.includes(
+      failedSelector.trim()
+    )
+  ) {
+
+    console.log(
+      "🚫 Ignoring generic selector:",
+      failedSelector
+    );
+
+    return null;
+  }
+
   try {
 
-    const elements = await page.evaluate(() => {
+    console.log(
+      "🧠 Healing selector:",
+      failedSelector
+    );
 
-      const all = Array.from(
-        document.querySelectorAll("*")
+    /**
+     * TEXT SELECTOR
+     */
+    if (
+      failedSelector.startsWith("text=")
+    ) {
+
+      const rawText =
+        failedSelector
+          .replace("text=", "")
+          .trim();
+
+      /**
+       * Try exact text
+       */
+      const exact =
+        page.locator(
+          `text=${rawText}`
+        );
+
+      if (
+        await exact.count() > 0
+      ) {
+
+        return `text=${rawText}`;
+
+      }
+
+      /**
+       * Try partial text
+       */
+      const partial =
+        page.locator(
+          `text=${rawText}`
+        );
+
+      if (
+        await partial.count() > 0
+      ) {
+
+        console.log(
+          "🤖 Partial text healed"
+        );
+
+        return `text=${rawText.substring(0, 3)}`;
+
+      }
+
+      /**
+       * Role-based recovery
+       */
+      const roleCandidate =
+        page.getByRole("link", {
+          name: new RegExp(
+            rawText,
+            "i"
+          ),
+        });
+
+      if (
+        await roleCandidate.count() > 0
+      ) {
+
+        console.log(
+          "🤖 Role selector healed"
+        );
+
+        return `role=link[name="${rawText}"]`;
+
+      }
+
+    }
+
+
+
+    if (page.isClosed()) {
+
+      console.log(
+        "❌ Browser page already closed"
       );
 
-      return all.map((el: any) => ({
-        tag: el.tagName?.toLowerCase(),
-        id: el.id || "",
-        text: el.innerText || "",
-        className: el.className || "",
-        type: el.type || "",
-        placeholder: el.placeholder || "",
-      }));
+      return null;
+    }
 
-    });
+    /**
+     * DOM ANALYSIS
+     */
+    const elements =
+      await page.evaluate(() => {
 
-    const keyword =
-      failedSelector
-        .replace("#", "")
-        .replace("Btn", "")
-        .toLowerCase();
+        const all = Array.from(
+          document.querySelectorAll("*")
+        );
+
+        return all
+
+          .filter((el: any) => {
+
+            /**
+             * Remove huge containers
+             */
+            const text =
+              (el.innerText || "")
+                .trim();
+
+            if (
+              text.length > 120
+            ) {
+              return false;
+            }
+
+            /**
+             * Remove layout containers
+             */
+            const tag =
+              el.tagName?.toLowerCase();
+
+            if (
+              [
+                "body",
+                "html",
+                "main"
+              ].includes(tag)
+            ) {
+              return false;
+            }
+
+            /**
+             * Remove app wrappers
+             */
+            if (
+              el.id === "root"
+            ) {
+              return false;
+            }
+
+            const clickable =
+              [
+                "button",
+                "a",
+                "input",
+                "textarea",
+                "select"
+              ].includes(tag);
+
+            return clickable;
+
+          })
+
+          .map((el: any) => ({
+
+            tag:
+              el.tagName?.toLowerCase(),
+
+            id:
+              el.id || "",
+
+            text:
+              el.innerText || "",
+
+            className:
+              typeof el.className === "string"
+                ? el.className
+                : "",
+
+            type:
+              el.type || "",
+
+            placeholder:
+              el.placeholder || "",
+
+            aria:
+              el.getAttribute(
+                "aria-label"
+              ) || "",
+
+            name:
+              el.getAttribute(
+                "name"
+              ) || "",
+
+            testid:
+              el.getAttribute(
+                "data-testid"
+              ) || "",
+
+          }));
+
+      });
+
+    /**
+     * KEYWORD EXTRACTION
+     */
+    let keyword =
+      failedSelector;
+
+    /**
+     * role=link[name="About"]
+     */
+    const roleMatch =
+      failedSelector.match(
+        /name="([^"]+)"/
+      );
+
+    if (roleMatch?.[1]) {
+
+      keyword =
+        roleMatch[1];
+
+    }
+
+    /**
+     * text=About
+     */
+    else if (
+      failedSelector.startsWith("text=")
+    ) {
+
+      keyword =
+        failedSelector.replace(
+          "text=",
+          ""
+        );
+
+    }
+
+    /**
+     * #aboutBtn
+     */
+    else {
+
+      keyword =
+        failedSelector
+          .replace("#", "")
+          .replace(".", "")
+          .replace("Btn", "");
+
+    }
+
+    keyword =
+      keyword.toLowerCase().trim();
 
     const scored: any[] = [];
 
@@ -35,66 +285,188 @@ export async function findBestSelector(
       let score = 0;
 
       const id =
-        el.id.toLowerCase();
+        typeof el.id === "string"
+          ? el.id.toLowerCase()
+          : "";
 
       const text =
-        el.text.toLowerCase();
+        typeof el.text === "string"
+          ? el.text.toLowerCase()
+          : "";
 
       const cls =
-        el.className.toLowerCase();
+        typeof el.className === "string"
+          ? el.className.toLowerCase()
+          : "";
 
-      // exact id match
-      if (id.includes(keyword)) {
-        score += 10;
-      }
+      const aria =
+        typeof el.aria === "string"
+          ? el.aria.toLowerCase()
+          : "";
 
-      // button preference
+      const placeholder =
+        typeof el.placeholder === "string"
+          ? el.placeholder.toLowerCase()
+          : "";
+
+      const name =
+        typeof el.name === "string"
+          ? el.name.toLowerCase()
+          : "";
+
+      const testid =
+        typeof el.testid === "string"
+          ? el.testid.toLowerCase()
+          : "";
+
+      /**
+       * PRIORITY SCORING
+       */
+
       if (
-        el.tag === "button"
+        testid.includes(keyword)
+      ) score += 20;
+
+      if (
+        id.includes(keyword)
+      ) score += 15;
+
+      if (
+        aria.includes(keyword)
+      ) score += 12;
+
+      if (
+        name.includes(keyword)
+      ) score += 10;
+
+      if (
+        placeholder.includes(keyword)
+      ) score += 8;
+
+      /**
+       * EXACT TEXT MATCH
+       */
+      if (
+        text === keyword
       ) {
-        score += 5;
-      }
 
-      // text similarity
-      if (
+        score += 20;
+
+      }
+      else if (
         text.includes(keyword)
       ) {
-        score += 3;
+
+        score += 6;
+
       }
 
-      // class similarity
       if (
         cls.includes(keyword)
-      ) {
-        score += 2;
-      }
+      ) score += 4;
+
+      if (
+        el.tag === "button"
+      ) score += 3;
 
       if (score > 0) {
 
-        scored.push({
-          selector: el.id
-            ? `#${el.id}`
-            : `text=${el.text}`,
-          score,
-        });
+        let selector = null;
+
+        if (testid) {
+
+          selector =
+            `[data-testid="${testid}"]`;
+
+        }
+        else if (id) {
+
+          selector =
+            `#${id}`;
+
+        }
+        else if (aria) {
+
+          selector =
+            `[aria-label="${aria}"]`;
+
+        }
+        else if (name) {
+
+          selector =
+            `[name="${name}"]`;
+
+        }
+        else if (placeholder) {
+
+          selector =
+            `[placeholder="${placeholder}"]`;
+
+        }
+        else if (text) {
+
+          selector =
+            `text=${text}`;
+
+        }
+
+        if (selector) {
+
+          scored.push({
+            selector,
+            score,
+            confidence: Math.min(score * 5, 100),
+            matchedText: text,
+          });
+
+        }
 
       }
 
     }
 
     scored.sort(
-      (a, b) => b.score - a.score
+      (a, b) =>
+        b.score - a.score
+    );
+
+    console.log(
+      "🧠 Healing candidates:",
+      scored.slice(0, 5)
     );
 
     if (scored.length > 0) {
 
-      return scored[0].selector;
+      console.log(
+        "🤖 Final healed selector:",
+        scored[0].selector
+      );
+
+      const best = scored[0];
+
+      healingHistory.push({
+        originalSelector: failedSelector,
+        healedSelector: best.selector,
+        confidence: best.confidence,
+        timestamp: new Date(),
+      });
+
+      console.log(
+        "🔥 Healing saved:",
+        healingHistory
+      );
+
+      return best.selector;
 
     }
-
     return null;
 
-  } catch {
+  } catch (error) {
+
+    console.error(
+      "Healing engine failed",
+      error
+    );
 
     return null;
 

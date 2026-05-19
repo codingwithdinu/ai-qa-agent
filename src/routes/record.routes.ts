@@ -1,10 +1,12 @@
 import { Router } from "express";
 import recorderService from "../services/recorder/recorder.service";
+import {authMiddleware} from "../middleware/auth.middleware";
 
 import {
   createRecording,
   listRecordings,
   startRecording,
+  stopRecording,
 } from "../controllers/record.controller";
 
 const router = Router();
@@ -17,12 +19,29 @@ router.post("/", createRecording);
 /**
  * List recordings
  */
-router.get("/", listRecordings);
+router.get(
+  "/",
+  authMiddleware,
+  listRecordings
+);
 
 /**
  * Start Playwright recording browser
  */
-router.post("/start", startRecording);
+router.post(
+  "/start",
+  authMiddleware,
+  startRecording
+);
+
+/**
+ * Stop recording
+ */
+router.post(
+  "/stop",
+  authMiddleware,
+  stopRecording
+);
 
 /**
  * Receive browser events

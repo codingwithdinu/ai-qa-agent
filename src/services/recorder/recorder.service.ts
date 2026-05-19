@@ -6,8 +6,10 @@ import { chromium, Browser, Page } from "playwright";
 import fs from "fs";
 import path from "path";
 
+
 let browser: Browser | null = null;
 let page: Page | null = null;
+let currentRecordingId = "";
 
 /**
  * Start recording browser session
@@ -15,15 +17,21 @@ let page: Page | null = null;
 export async function startRecording(
   sessionId: string,
   url: string,
+  userId: string,
+  workspaceId: string,
+
 ): Promise<string> {
   try {
     const recordingId = uuid();
+    currentRecordingId = recordingId;
 
     const recording = await prisma.recording.create({
       data: {
         id: recordingId,
         sessionId,
         url,
+        userId,
+        workspaceId,
         events: JSON.stringify([]),
       },
     });
@@ -43,7 +51,7 @@ export async function startRecording(
     const context = await browser.newContext();
 
     /**
-     * Inject recorder globally
+     * Injector path
      */
     const injectorPath = path.resolve(
       process.cwd(),
@@ -53,25 +61,63 @@ export async function startRecording(
       "injector.js",
     );
 
-    console.log("Injector Path:", injectorPath);
-
-    const script = fs.readFileSync(injectorPath, "utf-8");
+    console.log(
+      "Injector Path:",
+      injectorPath
+    );
 
     /**
-     * Create page AFTER injection
+     * Create page
      */
     page = await context.newPage();
 
     /**
+     * Bridge frontend injector
+     * to backend recorder
+     */
+    await page.exposeFunction(
+
+      "sendRecordedEvent",
+
+      async (payload: any) => {
+
+        await addEventToRecording(
+          recordingId,
+          payload
+        );
+
+        console.log(
+          "🎯 Event Saved:",
+          payload
+        );
+      }
+    );
+
+    /**
      * Open target URL
      */
-    await page.goto(url);
+    await page.goto(url, {
 
-    await page.evaluate((id) => {
-      (window as any).__recordingId = id;
-    }, recordingId);
+      waitUntil: "domcontentloaded",
 
-    await page.evaluate(script);
+      timeout: 60000,
+    });
+    /**
+     * Inject recorder script
+     */
+    await page.addScriptTag({
+
+      path: injectorPath,
+    });
+
+    /**
+     * VERIFY INJECTOR
+     */
+    console.log(
+      "✅ Recorder injected"
+    );
+
+
 
     logger.info("🎥 Playwright browser launched");
 
@@ -115,10 +161,14 @@ export async function addEventToRecording(
 /**
  * Stop recording
  */
-export async function stopRecording(recordingId: string): Promise<any> {
+export async function stopRecording(
+  recordingId: string
+): Promise<any> {
   try {
     const recording = await prisma.recording.findUnique({
-      where: { id: recordingId },
+      where: {
+        id: currentRecordingId
+      },
     });
 
     if (!recording) {
@@ -127,7 +177,7 @@ export async function stopRecording(recordingId: string): Promise<any> {
 
     const events = JSON.parse(recording.events || "[]") as RecordingEvent[];
 
-    logger.info(`Recording stopped: ${recordingId}`, {
+    logger.info(`Recording stopped: ${currentRecordingId}`, {
       totalEvents: events.length,
     });
 
@@ -135,6 +185,7 @@ export async function stopRecording(recordingId: string): Promise<any> {
      * Close browser
      */
     if (browser) {
+      currentRecordingId = "";
       await browser.close();
       browser = null;
       page = null;

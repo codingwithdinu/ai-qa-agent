@@ -103,8 +103,33 @@ export async function executeGeneratedTest(
 
     try {
 
+      const outputDir =
+        `test-results/${recordingId}`;
+
       const command =
-        `npx playwright test`;
+        `npx playwright test generated-tests/${recordingId}.spec.ts --output=${outputDir}`;
+
+
+      const provider =
+        process.env.CI_PROVIDER ||
+        "Local Runner";
+
+      const branch =
+        process.env.GIT_BRANCH ||
+        "main";
+
+      const environment =
+        process.env.NODE_ENV ||
+        "development";
+
+      const commitHash =
+        process.env.GIT_COMMIT ||
+        "local";
+
+      const buildNumber =
+        process.env.BUILD_NUMBER ||
+        Date.now().toString();
+
 
       console.log("🚀 Running Test:");
       console.log(command);
@@ -143,33 +168,43 @@ export async function executeGeneratedTest(
         await prisma.testExecution.create({
 
           data: {
-
             recordingId,
-
             status:
               success
                 ? "PASSED"
                 : "FAILED",
-
             healedCount,
-
             duration,
-
+            provider,
+            branch,
+            environment,
+            commitHash,
+            buildNumber,
             logs:
               stdout + "\n" + stderr,
-
           },
 
         });
 
         if (error) {
 
+          console.log("EXEC ERROR:");
+          console.log(error);
+
+          console.log("STDERR:");
+          console.log(stderr);
+
+          console.log("STDOUT:");
+          console.log(stdout);
+
           return reject({
 
             success: false,
 
             message:
-              stderr || error.message,
+              stderr ||
+              stdout ||
+              error.message,
 
           });
 

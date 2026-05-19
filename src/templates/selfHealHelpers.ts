@@ -1,6 +1,7 @@
 import { expect, Page } from "@playwright/test";
 import { findBestSelector }
     from "../services/healing/selectorHealer";
+    
 
 export async function safeClick(
     page: Page,
@@ -9,8 +10,23 @@ export async function safeClick(
 
     try {
 
-        await page.click(selector, {
-            timeout: 2000,
+        await page.waitForSelector(
+            selector,
+            {
+                timeout: 3000,
+                state: "attached",
+            }
+        );
+
+        const locator =
+            page.locator(selector)
+                .first();
+
+        await locator
+            .scrollIntoViewIfNeeded();
+
+        await locator.click({
+            timeout: 3000,
         });
 
         return selector;
@@ -30,13 +46,25 @@ export async function safeClick(
 
         if (healedSelector) {
 
-            await page.click(
+            await page.waitForSelector(
                 healedSelector,
                 {
-                    timeout: 2000,
+                    timeout: 3000,
+                    state: "attached",
                 }
             );
 
+            const healedLocator =
+                page.locator(
+                    healedSelector
+                ).first();
+
+            await healedLocator
+                .scrollIntoViewIfNeeded();
+
+            await healedLocator.click({
+                timeout: 3000,
+            });
             console.log(
                 "🤖 AI healed selector:",
                 healedSelector
@@ -62,10 +90,15 @@ export async function safeExpectVisible(
 
     try {
 
+        const locator =
+            page.locator(
+                selector
+            ).first();
+
         await expect(
-            page.locator(selector)
+            locator
         ).toBeVisible({
-            timeout: 2000,
+            timeout: 3000,
         });
 
         return selector;
@@ -85,10 +118,15 @@ export async function safeExpectVisible(
 
         if (healedSelector) {
 
+            const healedLocator =
+                page.locator(
+                    healedSelector
+                ).first();
+
             await expect(
-                page.locator(healedSelector)
+                healedLocator
             ).toBeVisible({
-                timeout: 2000,
+                timeout: 3000,
             });
 
             console.log(

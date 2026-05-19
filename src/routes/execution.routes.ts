@@ -3,6 +3,10 @@ import { Router } from "express";
 import ExecutionController
   from "../controllers/execution.controller";
 
+import {
+  authMiddleware
+} from "../middleware/auth.middleware";
+
 const router = Router();
 
 /**
@@ -10,6 +14,7 @@ const router = Router();
  */
 router.get(
   "/stats",
+  authMiddleware,
   ExecutionController.getExecutionStats
 );
 
@@ -18,6 +23,7 @@ router.get(
  */
 router.get(
   "/failures",
+  authMiddleware,
   ExecutionController.getFailedExecutions
 );
 
@@ -26,6 +32,7 @@ router.get(
  */
 router.get(
   "/",
+  authMiddleware,
   ExecutionController.getAllExecutions
 );
 
@@ -34,6 +41,7 @@ router.get(
  */
 router.get(
   "/:id",
+  authMiddleware,
   ExecutionController.getExecutionById
 );
 

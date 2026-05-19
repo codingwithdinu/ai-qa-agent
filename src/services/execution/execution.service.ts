@@ -3,29 +3,37 @@ import prisma from "../../config/database";
 /**
  * Get all test executions
  */
-export async function getAllExecutions() {
-
+export async function getAllExecutions(
+  userId: string
+) {
   return await prisma.testExecution.findMany({
+    where: {
+      recording: {
+        userId: userId,
+      },
+    },
 
     orderBy: {
       createdAt: "desc",
     },
 
   });
-
 }
 
 /**
  * Get execution by ID
  */
 export async function getExecutionById(
-  id: string
+  id: string,
+  userId: string
 ) {
-
-  return await prisma.testExecution.findUnique({
+  return await prisma.testExecution.findFirst({
 
     where: {
       id,
+      recording: {
+        userId: userId,
+      },
     },
 
   });
@@ -35,12 +43,20 @@ export async function getExecutionById(
 /**
  * Get failed executions
  */
-export async function getFailedExecutions() {
+export async function getFailedExecutions(
+  userId: string
+) {
 
   return await prisma.testExecution.findMany({
 
     where: {
+
       status: "FAILED",
+
+      recording: {
+        userId: userId,
+      },
+
     },
 
     orderBy: {
@@ -54,11 +70,20 @@ export async function getFailedExecutions() {
 /**
  * Get execution analytics stats
  */
-export async function getExecutionStats() {
+export async function getExecutionStats(
+  userId: string
+) {
 
   const executions =
-    await prisma.testExecution.findMany();
+    await prisma.testExecution.findMany({
 
+      where: {
+        recording: {
+          userId: userId,
+        },
+      },
+
+    });
   const totalTests =
     executions.length;
 
@@ -82,18 +107,28 @@ export async function getExecutionStats() {
   const avgDuration =
     totalTests > 0
       ? executions.reduce(
-          (acc, curr) =>
-            acc + curr.duration,
-          0
-        ) / totalTests
+        (acc, curr) =>
+          acc + curr.duration,
+        0
+      ) / totalTests
       : 0;
 
   const healingSuccessRate =
     totalTests > 0
-      ? (
-          (passedTests / totalTests) * 100
+      ? Number(
+        (
+          (passedTests / totalTests) *
+          100
         ).toFixed(2)
-      : "0";
+      )
+      : 0;
+
+  const recentFailures =
+    executions
+      .filter(
+        (e) => e.status === "FAILED"
+      )
+      .slice(0, 5);
 
   return {
 
@@ -105,9 +140,23 @@ export async function getExecutionStats() {
 
     totalHealing,
 
-    avgDuration,
+    avgDuration:
+      Number(
+        avgDuration.toFixed(2)
+      ),
 
     healingSuccessRate,
+
+    recentFailures,
+
+    executionTrend: executions.map(
+      (e) => ({
+        id: e.id,
+        status: e.status,
+        duration: e.duration,
+        createdAt: e.createdAt,
+      })
+    ),
 
   };
 

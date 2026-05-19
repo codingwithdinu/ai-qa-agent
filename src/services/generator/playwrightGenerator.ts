@@ -2,6 +2,9 @@ import { logger } from "../../utils/logger";
 import { RecordingEvent } from "../../types/recording.types";
 import GroqService from "../ai/groq.service";
 
+
+const MAX_ASSERTIONS = 15;
+
 /**
  * Generate Playwright test code from recording events
  */
@@ -9,6 +12,14 @@ export async function generatePlaywrightCode(
   events: RecordingEvent[],
   recordingName?: string,
 ): Promise<string> {
+
+  const navigateEvent = events.find(
+    (e) => e.type === "navigate"
+  );
+
+  const targetUrl =
+    navigateEvent?.url ||
+    "https://example.com";
 
   let code = `
 import { test, expect } from '@playwright/test';
@@ -18,9 +29,11 @@ import {
   safeExpectVisible
 } from '../src/templates/selfHealHelpers';
 
-test('${recordingName || "Recorded Test"}', async ({ page }) => {
+test('${recordingName}', async ({ page }) => {
 
-  await page.goto('http://localhost:5000/test.html');
+  
+
+  await page.goto('${targetUrl}');
 
 `;
 
@@ -51,16 +64,80 @@ test('${recordingName || "Recorded Test"}', async ({ page }) => {
 
 `;
 
+        /**
+         * Deterministic route assertions
+         */
+        {
+          const selector =
+            event.selector || "";
+
+          if (
+            selector.includes("About")
+          ) {
+
+            code += `
+  await expect(page).toHaveURL(
+    /about/
+  );
+
+`;
+
+          }
+
+          if (
+            selector.includes("Services")
+          ) {
+
+            code += `
+  await expect(page).toHaveURL(
+    /services/
+  );
+
+`;
+
+          }
+
+          if (
+            selector.includes("Contact")
+          ) {
+
+            code += `
+  await expect(page).toHaveURL(
+    /contact/
+  );
+
+`;
+
+          }
+
+          if (
+            selector.includes("Internship")
+          ) {
+
+            code += `
+  await expect(page).toHaveURL(
+    /internship/
+  );
+
+`;
+
+          }
+
+        }
+
         break;
 
       case "type":
 
+      case "input":
+
         code += `
-  // Step ${index + 1}: Type text
+  // Step ${index + 1}: Fill input
 
   await page.fill(
     '${event.selector}',
-    '${event.text || ""}'
+    '${(event.value || event.text || "")
+            .replace(/'/g, "\\'")}'
   );
 
 `;
@@ -85,9 +162,7 @@ test('${recordingName || "Recorded Test"}', async ({ page }) => {
         code += `
   // Step ${index + 1}: Screenshot
 
-  await page.screenshot({
-    path: 'screenshot-${index}.png'
-  });
+ 
 
 `;
 
@@ -115,31 +190,148 @@ test('${recordingName || "Recorded Test"}', async ({ page }) => {
    */
   try {
 
+    const interactionEvents =
+      events.filter(
+        (e) =>
+          e.type === "click" ||
+          e.type === "input" ||
+          e.type === "type"
+      );
+
     const aiAssertions =
       await GroqService.generateAssertions(
-        events
+        interactionEvents
       );
+
+    console.log(
+      "🤖 Raw AI Assertions:\n",
+      aiAssertions
+    );
+
+    const allowedAssertions = [
+      "toBeVisible",
+      "toBeEnabled",
+      "toContainText",
+      "toHaveURL",
+      "not.toBeVisible",
+    ];
+
 
     const healedAssertions =
       aiAssertions
 
-        // heal visibility assertions
+        .split("\n")
+
+        // remove empty
+        .filter((line) => line.trim())
+
+        // allowed assertions only
+        .filter((line) =>
+          allowedAssertions.some((a) =>
+            line.includes(a)
+          )
+        )
+
+        // remove noisy amazon assertions
+        .filter(
+          (line) =>
+            !line.includes("Amazon") &&
+            !line.includes("Cart") &&
+            !line.includes("Orders") &&
+            !line.includes("Sign in") &&
+            !line.includes("Customer Service")
+        )
+
+        // remove duplicate lines
+        .filter(
+          (line, index, self) =>
+            self.indexOf(line) === index
+        )
+
+        // max assertions
+        .slice(0, 10)
+
+        .join("\n")
+
+        // healing visible
         .replace(
           /await expect\(page\.locator\((.*?)\)\)\.toBeVisible\(\);/g,
           "await safeExpectVisible(page, $1);"
         )
 
-        // heal clicks
+        // healing clicks
         .replace(
           /await page\.locator\((.*?)\)\.click\(\);/g,
           "await safeClick(page, $1);"
         );
 
+
+    const cleanedAssertions =
+      aiAssertions
+
+        .split("\n")
+
+        .map((line) => line.trim())
+
+        .filter(Boolean)
+
+        // remove duplicates
+        .filter(
+          (line, index, self) =>
+            self.indexOf(line) === index
+        )
+
+        // only allow expect assertions
+        .filter((line) =>
+          line.startsWith("await expect")
+        )
+
+        // remove unsupported assertions
+        .filter((line) =>
+          allowedAssertions.some((a) =>
+            line.includes(a)
+          )
+        )
+
+        // prevent broken lines
+        .filter(
+          (line) =>
+            !line.includes("undefined") &&
+            !line.includes("null") &&
+            !line.includes("text\n") &&
+            line.length < 250
+        )
+
+        // convert locator to first()
+        .map((line) =>
+
+          line.replace(
+            /page\.locator\((.*?)\)/g,
+            "page.locator($1).first()"
+          )
+        )
+
+        // self-healing visibility
+        .map((line) =>
+
+          line.replace(
+            /await expect\(page\.locator\((.*?)\)\.first\(\)\)\.toBeVisible\(\);/g,
+
+            "await safeExpectVisible(page, $1);"
+          )
+        )
+
+        // limit assertion explosion
+        .slice(0, MAX_ASSERTIONS);
+
+    const finalAssertions =
+      cleanedAssertions.join("\n");
+
     code += `
 
   // AI Assertions
 
-  ${healedAssertions}
+  ${finalAssertions}
 
 `;
 
@@ -228,7 +420,10 @@ export class ${pageName || "Page"} {
     }
 
     if (
-      event.type === "type" &&
+      (
+        event.type === "type" ||
+        event.type === "input"
+      ) &&
       event.selector
     ) {
 
@@ -249,7 +444,8 @@ export class ${pageName || "Page"} {
   });
 
   code += `
-}
+
+  
 `;
 
   logger.info(

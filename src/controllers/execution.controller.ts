@@ -1,20 +1,24 @@
 import { Request, Response } from "express";
-
 import ExecutionService
   from "../services/execution/execution.service";
+import { AuthRequest } from "../middleware/auth.middleware";
+
+
 
 /**
  * Get all executions
  */
 export async function getAllExecutions(
-  _req: Request,
+  req: AuthRequest,
   res: Response
 ) {
 
   try {
 
     const executions =
-      await ExecutionService.getAllExecutions();
+      await ExecutionService.getAllExecutions(
+        req.userId!
+      );
 
     return res.status(200).json({
 
@@ -42,7 +46,7 @@ export async function getAllExecutions(
  * Get execution by ID
  */
 export async function getExecutionById(
-  req: Request,
+  req: AuthRequest,
   res: Response
 ) {
 
@@ -51,7 +55,10 @@ export async function getExecutionById(
     const { id } = req.params;
 
     const execution =
-      await ExecutionService.getExecutionById(id);
+      await ExecutionService.getExecutionById(
+        id,
+        req.userId!
+      );
 
     if (!execution) {
 
@@ -91,15 +98,16 @@ export async function getExecutionById(
  * Get failed executions
  */
 export async function getFailedExecutions(
-  _req: Request,
+  req: AuthRequest,
   res: Response
 ) {
 
   try {
 
     const failedExecutions =
-      await ExecutionService.getFailedExecutions();
-
+      await ExecutionService.getFailedExecutions(
+        req.userId!
+      );
     return res.status(200).json({
 
       success: true,
@@ -126,15 +134,16 @@ export async function getFailedExecutions(
  * Get execution statistics
  */
 export async function getExecutionStats(
-  _req: Request,
+  req: AuthRequest,
   res: Response
 ) {
 
   try {
 
     const stats =
-      await ExecutionService.getExecutionStats();
-
+      await ExecutionService.getExecutionStats(
+        req.userId!
+      );
     return res.status(200).json({
 
       success: true,

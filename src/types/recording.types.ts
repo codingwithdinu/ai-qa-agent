@@ -1,5 +1,5 @@
 export interface RecordingEvent {
-	type: "navigate" | "click" | "type" | "wait" | "screenshot" | "refresh";
+	type: "navigate" | "click" | "type" | "wait" | "screenshot" | "refresh" | "input";
 	selector?: string;
 	text?: string;
 	url?: string;
@@ -7,6 +7,7 @@ export interface RecordingEvent {
 	timestamp: number;
 	x?: number;
 	y?: number;
+	value?: string;
 }
 
 export interface RecordingSession {
