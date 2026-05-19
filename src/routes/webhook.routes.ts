@@ -47,7 +47,7 @@ router.post("/github", async (req, res) => {
                 data: {
 
                     recordingId:
-                        "demo-recording",
+                        "02f63af0-959f-4e7c-88a4-0731c41c0fe3",
 
                     status:
                         "PASSED",
