@@ -19,9 +19,10 @@ jobs:
           node-version: 20
 
       - name: Install Dependencies
-        run: |
-          npm install
-          chmod +x node_modules/.bin/prisma
+        run: npm install
+
+      - name: Fix Prisma Permission
+        run: chmod +x node_modules/.bin/prisma
 
       - name: Generate Prisma Client
         run: npx prisma generate
