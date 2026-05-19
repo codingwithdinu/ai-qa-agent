@@ -1,0 +1,37 @@
+name: AI QA Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  ai-qa-test:
+
+    runs-on: ubuntu-latest
+
+    env:
+      CI_PROVIDER: GitHub Actions
+      GIT_BRANCH: ${{ github.ref_name }}
+      GIT_COMMIT: ${{ github.sha }}
+      BUILD_NUMBER: ${{ github.run_number }}
+      NODE_ENV: production
+
+    steps:
+
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+
+      - name: Run AI QA Tests
+        run: npx playwright test
