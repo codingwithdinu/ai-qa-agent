@@ -82,71 +82,131 @@ router.post("/github", async (req, res) => {
         /**
          * SAVE EXECUTION
          */
-        await prisma.testExecution.create({
+        const existingExecution =
+            await prisma.testExecution.findFirst({
 
-            data: {
+                where: {
 
-                recordingId:
-                    recording.id,
+                    githubRunId:
+                        workflowRun.id.toString(),
+                },
+            });
 
-                status:
-                    workflowRun.conclusion === "success"
-                        ? "PASSED"
-                        : workflowRun.conclusion === "failure"
-                            ? "FAILED"
-                            : "RUNNING",
+        if (existingExecution) {
 
-                healedCount: 0,
+            await prisma.testExecution.update({
 
-                duration:
-                    workflowRun.run_started_at &&
-                    workflowRun.updated_at
-                        ? (
-                            new Date(workflowRun.updated_at).getTime() -
-                            new Date(workflowRun.run_started_at).getTime()
-                        ) / 1000
-                        : 0,
+                where: {
+                    id: existingExecution.id,
+                },
 
-                logs:
-                    workflowRun.display_title ||
-                    JSON.stringify(payload),
+                data: {
 
-                provider:
-                    "GitHub Actions",
+                    status:
+                        workflowRun.conclusion === "success"
+                            ? "PASSED"
+                            : workflowRun.conclusion === "failure"
+                                ? "FAILED"
+                                : "RUNNING",
 
-                branch:
-                    workflowRun.head_branch || "main",
+                    duration:
+                        workflowRun.run_started_at &&
+                            workflowRun.updated_at
+                            ? (
+                                new Date(workflowRun.updated_at).getTime() -
+                                new Date(workflowRun.run_started_at).getTime()
+                            ) / 1000
+                            : 0,
 
-                environment:
-                    "production",
+                    logs:
+                        workflowRun.display_title ||
+                        "",
 
-                repository:
-                    payload.repository?.full_name || "",
+                    branch:
+                        workflowRun.head_branch || "main",
 
-                workflowName:
-                    workflowRun.name || "",
+                    commitMessage:
+                        workflowRun.head_commit?.message ||
+                        workflowRun.display_title ||
+                        "",
+                },
+            });
 
-                actor:
-                    workflowRun.actor?.login || "",
+            console.log(
+                "♻️ Existing workflow updated"
+            );
 
-                commitMessage:
-                    workflowRun.head_commit?.message ||
-                    workflowRun.display_title ||
-                    "",
+        } else {
 
-                commitHash:
-                    workflowRun.head_sha || "",
+            await prisma.testExecution.create({
 
-                buildNumber:
-                    workflowRun.run_number
-                        ? workflowRun.run_number.toString()
-                        : "",
-            },
-        });
+                data: {
 
-        console.log(
-            "✅ GitHub webhook saved"
-        );
+                    recordingId:
+                        recording.id,
+
+                    githubRunId:
+                        workflowRun.id.toString(),
+
+                    status:
+                        workflowRun.conclusion === "success"
+                            ? "PASSED"
+                            : workflowRun.conclusion === "failure"
+                                ? "FAILED"
+                                : "RUNNING",
+
+                    healedCount: 0,
+
+                    duration:
+                        workflowRun.run_started_at &&
+                            workflowRun.updated_at
+                            ? (
+                                new Date(workflowRun.updated_at).getTime() -
+                                new Date(workflowRun.run_started_at).getTime()
+                            ) / 1000
+                            : 0,
+
+                    logs:
+                        workflowRun.display_title ||
+                        JSON.stringify(payload),
+
+                    provider:
+                        "GitHub Actions",
+
+                    branch:
+                        workflowRun.head_branch || "main",
+
+                    environment:
+                        "production",
+
+                    repository:
+                        payload.repository?.full_name || "",
+
+                    workflowName:
+                        workflowRun.name || "",
+
+                    actor:
+                        workflowRun.actor?.login || "",
+
+                    commitMessage:
+                        workflowRun.head_commit?.message ||
+                        workflowRun.display_title ||
+                        "",
+
+                    commitHash:
+                        workflowRun.head_sha || "",
+
+                    buildNumber:
+                        workflowRun.run_number
+                            ? workflowRun.run_number.toString()
+                            : "",
+                },
+            });
+
+            console.log(
+                "✅ New workflow execution saved"
+            );
+        }
 
         return res.json({
 
