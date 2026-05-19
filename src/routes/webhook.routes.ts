@@ -12,27 +12,27 @@ router.post("/github", async (req, res) => {
 
         const payload = req.body;
 
-        console.log("===========");
-        console.log("EVENT:", event);
-        console.log("ACTION:", payload.action);
+        // console.log("===========");
+        // console.log("EVENT:", event);
+        // console.log("ACTION:", payload.action);
 
-        console.log(
-            "WORKFLOW:",
-            payload.workflow?.name ||
-            payload.workflow_run?.name
-        );
+        // console.log(
+        //     "WORKFLOW:",
+        //     payload.workflow?.name ||
+        //     payload.workflow_run?.name
+        // );
 
-        console.log(
-            "REPO:",
-            payload.repository?.full_name
-        );
+        // console.log(
+        //     "REPO:",
+        //     payload.repository?.full_name
+        // );
 
-        console.log(
-            "CONCLUSION:",
-            payload.workflow_run?.conclusion
-        );
+        // console.log(
+        //     "CONCLUSION:",
+        //     payload.workflow_run?.conclusion
+        // );
 
-        console.log("===========");
+        // console.log("===========");
 
         /**
          * ONLY HANDLE workflow_run EVENTS
