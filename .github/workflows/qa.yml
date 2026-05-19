@@ -29,8 +29,9 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          npm install
+          npm install --ignore-scripts
           chmod +x node_modules/.bin/prisma
+          npx prisma generate
 
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
