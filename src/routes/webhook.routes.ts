@@ -1,5 +1,7 @@
 import { Router } from "express";
 import prisma from "../config/database";
+import { io } from "../server";
+
 
 const router = Router();
 
@@ -206,6 +208,26 @@ router.post("/github", async (req, res) => {
             console.log(
                 "✅ New workflow execution saved"
             );
+
+            
+            io.emit("pipeline-updated", {
+
+                status:
+                    workflowRun.conclusion === "success"
+                        ? "PASSED"
+                        : workflowRun.conclusion === "failure"
+                            ? "FAILED"
+                            : "RUNNING",
+
+                workflow:
+                    workflowRun.name,
+
+                repository:
+                    payload.repository?.full_name,
+
+                branch:
+                    workflowRun.head_branch,
+            });
         }
 
         return res.json({

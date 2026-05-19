@@ -1,5 +1,6 @@
 import { Github, Gitlab, Rocket, ServerCog, TimerReset, type LucideIcon } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { io } from "socket.io-client";
 
 import { ActionButton } from '../../components/ui/ActionButton'
 import { DataTable } from '../../components/ui/DataTable'
@@ -16,6 +17,9 @@ interface PipelinesDataState {
   pipelineItems: PipelineItem[]
   deploymentTimeline: DeploymentEvent[]
 }
+
+const socket =
+  io("http://localhost:5000");
 
 const providerIcons:
   Record<string, LucideIcon> = {
@@ -40,6 +44,32 @@ export function PipelinesPage() {
       console.error(error);
     }
   }
+
+
+  useEffect(() => {
+
+    socket.on(
+      "pipeline-updated",
+
+      (data) => {
+
+        console.log(
+          "🔥 LIVE UPDATE:",
+          data
+        );
+
+        loadPipelines();
+      }
+    );
+
+    return () => {
+
+      socket.off(
+        "pipeline-updated"
+      );
+    };
+
+  }, []);
 
   useEffect(() => {
 

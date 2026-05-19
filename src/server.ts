@@ -1,85 +1,160 @@
 import http from "http";
 import dotenv from "dotenv";
+import { Server } from "socket.io";
+
 import routes from "./routes";
 import app from "./app";
 
-app.use("/api", routes);
-
 dotenv.config();
+
+app.use("/api", routes);
 
 /**
  * Environment Variables
  */
 const PORT = process.env.PORT || 5000;
-const NODE_ENV = process.env.NODE_ENV || "development";
+const NODE_ENV =
+    process.env.NODE_ENV || "development";
 
 /**
  * Create HTTP Server
  */
-const server = http.createServer(app);
+const server =
+    http.createServer(app);
+
+/**
+ * SOCKET.IO SERVER
+ */
+export const io = new Server(server, {
+
+    cors: {
+
+        origin:
+            "http://localhost:5173",
+
+        credentials: true,
+    },
+});
+
+io.on("connection", (socket) => {
+
+    console.log(
+        "⚡ Client connected"
+    );
+
+    socket.on("disconnect", () => {
+
+        console.log(
+            "❌ Client disconnected"
+        );
+    });
+});
 
 /**
  * Start Server
  */
 server.listen(PORT, () => {
-  console.log("====================================");
-  console.log("🚀 AI QA Agent Backend Started");
-  console.log(`🌍 Environment : ${NODE_ENV}`);
-  console.log(`📡 Server URL  : http://localhost:${PORT}`);
-  console.log("====================================");
+
+    console.log("====================================");
+
+    console.log(
+        "🚀 AI QA Agent Backend Started"
+    );
+
+    console.log(
+        `🌍 Environment : ${NODE_ENV}`
+    );
+
+    console.log(
+        `📡 Server URL  : http://localhost:${PORT}`
+    );
+
+    console.log("====================================");
 });
 
 /**
  * Handle Unhandled Promise Rejections
  */
-process.on("unhandledRejection", (reason: unknown) => {
-  console.error("❌ UNHANDLED REJECTION:", reason);
+process.on(
+    "unhandledRejection",
 
-  shutdown();
-});
+    (reason: unknown) => {
+
+        console.error(
+            "❌ UNHANDLED REJECTION:",
+            reason
+        );
+
+        shutdown();
+    }
+);
 
 /**
  * Handle Uncaught Exceptions
  */
-process.on("uncaughtException", (error: Error) => {
-  console.error("❌ UNCAUGHT EXCEPTION:", error);
+process.on(
+    "uncaughtException",
 
-  shutdown();
-});
+    (error: Error) => {
+
+        console.error(
+            "❌ UNCAUGHT EXCEPTION:",
+            error
+        );
+
+        shutdown();
+    }
+);
 
 /**
  * Graceful Shutdown
  */
 process.on("SIGTERM", () => {
-  console.log("⚠️ SIGTERM received");
 
-  shutdown();
+    console.log(
+        "⚠️ SIGTERM received"
+    );
+
+    shutdown();
 });
 
 process.on("SIGINT", () => {
-  console.log("⚠️ SIGINT received");
 
-  shutdown();
+    console.log(
+        "⚠️ SIGINT received"
+    );
+
+    shutdown();
 });
 
 /**
  * Shutdown Function
  */
 function shutdown(): void {
-  console.log("🛑 Shutting down server...");
 
-  server.close(() => {
-    console.log("✅ Server closed successfully");
+    console.log(
+        "🛑 Shutting down server..."
+    );
 
-    process.exit(1);
-  });
+    server.close(() => {
 
-  /**
-   * Force shutdown if hanging
-   */
-  setTimeout(() => {
-    console.error("❌ Forcefully shutting down");
+        console.log(
+            "✅ Server closed successfully"
+        );
 
-    process.exit(1);
-  }, 10000);
+        process.exit(1);
+    });
+
+    /**
+     * Force shutdown if hanging
+     */
+    setTimeout(() => {
+
+        console.error(
+            "❌ Forcefully shutting down"
+        );
+
+        process.exit(1);
+
+    }, 10000);
 }
