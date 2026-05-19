@@ -48,6 +48,10 @@ model TestExecution {
   branch        String?    // main / develop
   environment   String?    // staging / production
   commitHash    String?
+  repository    String?
+  workflowName  String?
+  actor         String?
+  commitMessage String?
   buildNumber   String?
   workspaceId   String?
   createdAt     DateTime   @default(now())
