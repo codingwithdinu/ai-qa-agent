@@ -152,7 +152,7 @@ export async function stopRecording(req: AuthRequest, res: Response) {
 
         const baseUrl =
           process.env.API_BASE_URL ||
-          "http://localhost:5000";
+          "https://ai-qa-agent-1.onrender.com";
 
         await fetch(
           `${baseUrl}/api/test/generate/${recording.id}`,

@@ -49,13 +49,13 @@ router.get("/", auth_middleware_1.authMiddleware, async (req, res) => {
             id: folder,
             createdAt: stats.birthtime,
             screenshot: screenshotFile
-                ? `http://localhost:5000/test-results/${folder}/${nestedFolders[0]}/${screenshotFile}`
+                ? `https://ai-qa-agent-1.onrender.com/test-results/${folder}/${nestedFolders[0]}/${screenshotFile}`
                 : null,
             video: videoFile
-                ? `http://localhost:5000/test-results/${folder}/${nestedFolders[0]}/${videoFile}`
+                ? `https://ai-qa-agent-1.onrender.com/test-results/${folder}/${nestedFolders[0]}/${videoFile}`
                 : null,
             trace: traceFile
-                ? `http://localhost:5000/test-results/${folder}/${nestedFolders[0]}/${traceFile}`
+                ? `https://ai-qa-agent-1.onrender.com/test-results/${folder}/${nestedFolders[0]}/${traceFile}`
                 : null,
         };
     })

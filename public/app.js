@@ -189,7 +189,7 @@
         method: "POST",
         body: JSON.stringify({
           sessionId: "dashboard-session",
-          url: "http://localhost:5000/test.html",
+          url: "https://ai-qa-agent-1.onrender.com/test.html",
         }),
       });
 

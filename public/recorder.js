@@ -14,7 +14,7 @@ document.addEventListener("click", async (event) => {
   };
 
   try {
-    await fetch("http://localhost:5000/api/record", {
+    await fetch("https://ai-qa-agent-1.onrender.com/api/record", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
