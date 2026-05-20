@@ -80,8 +80,7 @@ router.post(
 			const validPassword =
 				await bcrypt.compare(
 					password,
-					user.password
-				);
+					user.password || "");
 
 			if (!validPassword) {
 
