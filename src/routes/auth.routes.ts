@@ -324,7 +324,7 @@ router.get(
 
 	passport.authenticate("google", {
 		failureRedirect:
-			"http://localhost:5173/login",
+			"https://ai-qa-agent-rho.vercel.app/login",
 		session: false,
 	}),
 
@@ -344,8 +344,7 @@ router.get(
 		);
 
 		res.redirect(
-			`http://localhost:5173/oauth-success?token=${token}`
-		);
+			`https://ai-qa-agent-rho.vercel.app/oauth-success?token=${token}`);
 	}
 );
 
@@ -391,7 +390,7 @@ router.get(
 			);
 
 		res.redirect(
-			`http://localhost:5173/oauth-success?token=${token}`
+			`https://ai-qa-agent-rho.vercel.app/oauth-success?token=${token}`
 		);
 	});
 
