@@ -49,8 +49,6 @@ export async function startRecording(
 
       headless: false,
 
-      channel: "chrome",
-
       args: [
 
         "--new-window",
