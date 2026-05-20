@@ -370,22 +370,7 @@ export function ReportsPage() {
                   {insight.metric}
                 </p>
 
-                {/* DATE + TIME */}
-                <div className="text-right">
-
-                  <p className="text-xs text-slate-400">
-                    {
-                      new Date().toLocaleDateString()
-                    }
-                  </p>
-
-                  <p className="text-[11px] text-slate-500">
-                    {
-                      new Date().toLocaleTimeString()
-                    }
-                  </p>
-
-                </div>
+               
 
               </div>
 

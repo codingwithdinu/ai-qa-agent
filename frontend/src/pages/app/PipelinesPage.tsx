@@ -57,8 +57,6 @@ export function PipelinesPage() {
         'Status',
         'QA',
         'Duration',
-        'Updated Date',
-        'Updated Time',
       ]],
 
       body: data?.pipelineItems.map((item) => [
@@ -69,14 +67,7 @@ export function PipelinesPage() {
         item.status,
         item.qaGate,
         item.duration,
-        item.updatedAt
-          ? new Date(item.updatedAt).toLocaleDateString()
-          : '-',
-
-        item.updatedAt
-          ? new Date(item.updatedAt).toLocaleTimeString()
-          : '-',
-
+    
       ]),
 
       theme: 'grid',
@@ -267,13 +258,7 @@ export function PipelinesPage() {
 
                   <div className="mt-3 flex items-center justify-between text-xs text-slate-500">
 
-                    <span>
-                      {new Date().toLocaleDateString()}
-                    </span>
-
-                    <span>
-                      {new Date().toLocaleTimeString()}
-                    </span>
+                  
 
                   </div>
 
@@ -465,26 +450,7 @@ export function PipelinesPage() {
                   ),
                 },
 
-                {
-                  key: 'updatedAt',
-                  label: 'Updated',
-
-                  render: () => (
-
-                    <div className="min-w-[120px] text-[11px] text-slate-400">
-
-                      <div className="whitespace-nowrap">
-                        {new Date().toLocaleDateString()}
-                      </div>
-
-                      <div className="whitespace-nowrap text-cyan-300">
-                        {new Date().toLocaleTimeString()}
-                      </div>
-
-                    </div>
-
-                  ),
-                },
+              
               ]}
             />
 
