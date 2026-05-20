@@ -14,27 +14,7 @@ router.post("/github", async (req, res) => {
 
         const payload = req.body;
 
-        // console.log("===========");
-        // console.log("EVENT:", event);
-        // console.log("ACTION:", payload.action);
 
-        // console.log(
-        //     "WORKFLOW:",
-        //     payload.workflow?.name ||
-        //     payload.workflow_run?.name
-        // );
-
-        // console.log(
-        //     "REPO:",
-        //     payload.repository?.full_name
-        // );
-
-        // console.log(
-        //     "CONCLUSION:",
-        //     payload.workflow_run?.conclusion
-        // );
-
-        // console.log("===========");
 
         /**
          * ONLY HANDLE workflow_run EVENTS
@@ -134,9 +114,7 @@ router.post("/github", async (req, res) => {
                 },
             });
 
-            console.log(
-                "♻️ Existing workflow updated"
-            );
+            
 
         } else {
 
@@ -205,10 +183,7 @@ router.post("/github", async (req, res) => {
                 },
             });
 
-            console.log(
-                "✅ New workflow execution saved"
-            );
-
+           
 
         }
         io.emit("notification", {

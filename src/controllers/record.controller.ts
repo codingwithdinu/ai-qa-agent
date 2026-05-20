@@ -51,7 +51,6 @@ export async function createRecording(req: AuthRequest, res: Response) {
 
 export async function listRecordings(req: AuthRequest, res: Response) {
 
-  console.log("USER ID:", req.userId);
   
   const recs =
     await prisma.recording.findMany({
@@ -65,7 +64,6 @@ export async function listRecordings(req: AuthRequest, res: Response) {
       },
     });
 
-  console.log("RECORDINGS:", recs);
 
   return res.status(200).json({
     success: true,
@@ -150,9 +148,7 @@ export async function stopRecording(req: AuthRequest, res: Response) {
 
       try {
 
-        console.log(
-          "🤖 Background AI generation started"
-        );
+       
 
         const baseUrl =
           process.env.API_BASE_URL ||
@@ -172,9 +168,7 @@ export async function stopRecording(req: AuthRequest, res: Response) {
           }
         );
 
-        console.log(
-          "✅ Background AI generation completed"
-        );
+    
 
       } catch (error) {
 

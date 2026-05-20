@@ -31,17 +31,7 @@ export async function getPipelines() {
 }
 
 export async function getRecordings() {
-
-  console.log("CALLING RECORDINGS API");
-
-  const response =
-    await api.get("/recordings");
-
-  console.log(
-    "RECORDINGS API:",
-    response.data
-  );
-
+  const response = await api.get("/recordings");
   return response.data.data;
 }
 

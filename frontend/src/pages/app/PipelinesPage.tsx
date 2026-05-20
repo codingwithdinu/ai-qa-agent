@@ -116,13 +116,7 @@ export function PipelinesPage() {
     socket.on(
       "pipeline-updated",
 
-      (data) => {
-
-        console.log(
-          "🔥 LIVE UPDATE:",
-          data
-        );
-
+      () => {
         loadPipelines();
       }
     );

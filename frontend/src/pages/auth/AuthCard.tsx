@@ -16,9 +16,9 @@ interface AuthCardProps extends PropsWithChildren {
 export function AuthCard({ title, description, footerPrompt, footerAction, footerTo, children }: AuthCardProps) {
 
   const API_URL =
-    import.meta.env.VITE_API_URL ||
-    "http://localhost:5000";
-    
+    import.meta.env.VITE_API_URL
+      .replace("/api", "");
+
   const handleGithubLogin = () => {
     window.location.href =
       `${API_URL}/api/auth/github`;

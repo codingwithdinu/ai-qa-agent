@@ -21,20 +21,13 @@ export async function findBestSelector(
     )
   ) {
 
-    console.log(
-      "🚫 Ignoring generic selector:",
-      failedSelector
-    );
-
+   
     return null;
   }
 
   try {
 
-    console.log(
-      "🧠 Healing selector:",
-      failedSelector
-    );
+    
 
     /**
      * TEXT SELECTOR
@@ -76,9 +69,7 @@ export async function findBestSelector(
         await partial.count() > 0
       ) {
 
-        console.log(
-          "🤖 Partial text healed"
-        );
+     
 
         return `text=${rawText.substring(0, 3)}`;
 
@@ -99,9 +90,7 @@ export async function findBestSelector(
         await roleCandidate.count() > 0
       ) {
 
-        console.log(
-          "🤖 Role selector healed"
-        );
+        
 
         return `role=link[name="${rawText}"]`;
 
@@ -112,10 +101,6 @@ export async function findBestSelector(
 
 
     if (page.isClosed()) {
-
-      console.log(
-        "❌ Browser page already closed"
-      );
 
       return null;
     }
@@ -430,17 +415,11 @@ export async function findBestSelector(
         b.score - a.score
     );
 
-    console.log(
-      "🧠 Healing candidates:",
-      scored.slice(0, 5)
-    );
+    
 
     if (scored.length > 0) {
 
-      console.log(
-        "🤖 Final healed selector:",
-        scored[0].selector
-      );
+     
 
       const best = scored[0];
 
@@ -451,10 +430,7 @@ export async function findBestSelector(
         timestamp: new Date(),
       });
 
-      console.log(
-        "🔥 Healing saved:",
-        healingHistory
-      );
+    
 
       return best.selector;
 
@@ -463,10 +439,7 @@ export async function findBestSelector(
 
   } catch (error) {
 
-    console.error(
-      "Healing engine failed",
-      error
-    );
+    
 
     return null;
 

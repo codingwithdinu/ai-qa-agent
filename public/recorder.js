@@ -22,7 +22,6 @@ document.addEventListener("click", async (event) => {
       body: JSON.stringify(payload),
     });
 
-    console.log("✅ Event recorded");
   } catch (error) {
     console.error("❌ Recording failed", error);
   }

@@ -27,31 +27,25 @@ export function HealingPage() {
 
       try {
 
-        console.log("LOADING ANALYTICS");
 
         const analytics = await getAnalytics();
 
-        console.log("ANALYTICS:", analytics);
 
         setData(analytics);
 
-        console.log("LOADING HEALING");
 
         const healing = await getHealingData();
 
-        console.log("HEALING:", healing);
 
         setHealingData(healing);
 
       } catch (err) {
 
-        console.error("HEALING ERROR:", err);
 
         setError('Failed to load healing analytics');
 
       } finally {
 
-        console.log("LOADING FINISHED");
 
         setLoading(false);
 
@@ -97,7 +91,7 @@ export function HealingPage() {
 
                 const response =
                   await fetch(
-                    "http://localhost:5000/api/healing/export",
+                    `${import.meta.env.VITE_API_URL}/healing/export`,
                     {
                       headers: {
                         Authorization:
