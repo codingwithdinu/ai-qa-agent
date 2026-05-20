@@ -5,7 +5,15 @@ import { v4 as uuid } from "uuid";
 import { chromium, Browser, Page } from "playwright";
 import fs from "fs";
 import path from "path";
-import { Server } from "socket.io";
+import { execSync } from "child_process";
+
+try {
+  execSync("npx playwright install chromium", {
+    stdio: "inherit",
+  });
+} catch (e) {
+  console.log("Playwright already installed");
+}
 
 
 let browser: Browser | null = null;
@@ -47,14 +55,9 @@ export async function startRecording(
      */
     browser = await chromium.launch({
 
-      headless: false,
+      headless: true,
+      args: ["--no-sandbox"],
 
-      args: [
-
-        "--new-window",
-
-        "--start-maximized",
-      ],
     });
 
     const context = await browser.newContext({
