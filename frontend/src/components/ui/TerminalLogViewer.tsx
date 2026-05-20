@@ -21,7 +21,7 @@ export function TerminalLogViewer({ lines }: { lines: LogLine[] }) {
           Live
         </span>
       </div>
-      <div className="terminal-grid h-[340px] overflow-auto p-5 font-mono text-sm">
+      <div className="terminal-grid h-[620px] overflow-auto p-5 font-mono text-sm">
         {lines.length === 0 && (
           <div className="text-sm text-slate-500">
             No live logs available

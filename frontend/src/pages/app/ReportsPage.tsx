@@ -47,19 +47,36 @@ export function ReportsPage() {
     if (!data) return;
 
     const headers = [
+
+      "Execution ID",
       "Status",
       "Duration",
       "Healed Count",
+      "Created Date",
+      "Created Time",
+
     ];
 
     const rows =
-      data.executions.map((e) => [
+      data.executions.map((e, index) => [
+
+        e.id || `Execution-${index + 1}`,
 
         e.status,
 
-        e.duration,
+        `${e.duration}s`,
 
         e.healedCount,
+
+        e.createdAt
+          ? new Date(e.createdAt)
+            .toLocaleDateString()
+          : "--",
+
+        e.createdAt
+          ? new Date(e.createdAt)
+            .toLocaleTimeString()
+          : "--",
 
       ]);
 
@@ -82,7 +99,7 @@ export function ReportsPage() {
 
     saveAs(
       blob,
-      "qa-report.csv"
+      "ai-qa-full-report.csv"
     );
 
     pushToast({
@@ -90,7 +107,7 @@ export function ReportsPage() {
       title: "CSV downloaded",
 
       description:
-        "Execution analytics exported successfully.",
+        "Full execution analytics exported.",
 
       tone: "success",
 
@@ -138,19 +155,36 @@ export function ReportsPage() {
       startY: 70,
 
       head: [[
+
+        "Execution ID",
         "Status",
         "Duration",
-        "Healed"
+        "Healed",
+        "Date",
+        "Time"
+
       ]],
 
       body:
-        data.executions.map((e) => [
+        data.executions.map((e, index) => [
+
+          e.id || `Execution-${index + 1}`,
 
           e.status,
 
           `${e.duration}s`,
 
           e.healedCount,
+
+          e.createdAt
+            ? new Date(e.createdAt)
+              .toLocaleDateString()
+            : "--",
+
+          e.createdAt
+            ? new Date(e.createdAt)
+              .toLocaleTimeString()
+            : "--",
 
         ]),
 
@@ -261,14 +295,104 @@ export function ReportsPage() {
         }
       />
 
-      <div className="grid gap-4 md:grid-cols-3">
-        {data.reportInsights.map((insight) => (
-          <GlassPanel key={insight.id} className="p-5">
-            <p className="text-sm font-semibold text-white">{insight.title}</p>
-            <p className="mt-2 text-sm leading-6 text-slate-400">{insight.description}</p>
-            <p className="mt-4 text-lg font-semibold text-cyan-300">{insight.metric}</p>
-          </GlassPanel>
-        ))}
+      <div className="max-h-[820px] overflow-y-auto pr-2">
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          {data.reportInsights.map((insight) => (
+
+            <GlassPanel
+              key={insight.id}
+              className="
+      rounded-[28px]
+      border
+      border-white/10
+      bg-gradient-to-br
+      from-slate-900/90
+      to-slate-950/40
+      p-5
+      transition-all
+      duration-300
+      hover:border-cyan-400/20
+      hover:shadow-lg
+      hover:shadow-cyan-500/5
+    "
+            >
+
+              {/* TITLE */}
+              <div className="flex items-start justify-between gap-3">
+
+                <div>
+
+                  <p className="text-sm font-semibold text-white">
+                    {insight.title}
+                  </p>
+
+                  <p className="mt-2 text-sm leading-6 text-slate-400">
+                    {insight.description}
+                  </p>
+
+                </div>
+
+                <span
+                  className={`
+          rounded-full
+          px-3
+          py-1
+          text-[10px]
+          uppercase
+          tracking-[0.18em]
+          border
+          ${insight.description
+                      .toLowerCase()
+                      .includes("failed")
+                      ? "border-red-400/20 bg-red-500/10 text-red-300"
+                      : "border-emerald-400/20 bg-emerald-500/10 text-emerald-300"
+                    }
+        `}
+                >
+
+                  {
+                    insight.description
+                      .toLowerCase()
+                      .includes("failed")
+                      ? "Failed"
+                      : "Passed"
+                  }
+
+                </span>
+
+              </div>
+
+              {/* FOOTER */}
+              <div className="mt-5 flex items-center justify-between">
+
+                {/* DURATION */}
+                <p className="text-lg font-semibold text-cyan-300">
+                  {insight.metric}
+                </p>
+
+                {/* DATE + TIME */}
+                <div className="text-right">
+
+                  <p className="text-xs text-slate-400">
+                    {
+                      new Date().toLocaleDateString()
+                    }
+                  </p>
+
+                  <p className="text-[11px] text-slate-500">
+                    {
+                      new Date().toLocaleTimeString()
+                    }
+                  </p>
+
+                </div>
+
+              </div>
+
+            </GlassPanel>
+
+          ))}
+        </div>
       </div>
 
       <div className="grid gap-6 xl:grid-cols-[1fr_1fr]">
@@ -336,7 +460,7 @@ export function ReportsPage() {
                   </div>
 
                   <div className="mt-6">
-                    <p className="text-xs uppercase tracking-[0.2em] text-slate-500">
+                    <p className="text-[1px] uppercase tracking-[0.2em] text-slate-500">
                       Healed
                     </p>
 
@@ -381,34 +505,36 @@ export function ReportsPage() {
               <p className="text-sm text-slate-400">Curated evidence across failure states and recovered journeys</p>
             </div>
           </div>
-          <div className="mt-6 grid grid-cols-2 gap-3">
-            {artifacts.map((item) => (
+          <div className="mt-6 max-h-[720px] overflow-y-auto pr-2">
+            <div className="grid grid-cols-2 gap-3">
+              {artifacts.map((item) => (
 
-              <div
-                key={item.id}
-                className="overflow-hidden rounded-[1.5rem] border border-white/10 bg-slate-950/70"
-              >
+                <div
+                  key={item.id}
+                  className="overflow-hidden rounded-[1.5rem] border border-white/10 bg-slate-950/70"
+                >
 
-                {item.screenshot ? (
+                  {item.screenshot ? (
 
-                  <img
-                    src={item.screenshot}
-                    alt="execution"
-                    className="h-28 w-full object-cover cursor-pointer hover:scale-105 transition"
-                    onClick={() => setSelectedImage(item.screenshot)}
-                  />
+                    <img
+                      src={item.screenshot}
+                      alt="execution"
+                      className="h-28 w-full object-cover cursor-pointer hover:scale-105 transition"
+                      onClick={() => setSelectedImage(item.screenshot)}
+                    />
 
-                ) : (
+                  ) : (
 
-                  <div className="grid h-28 place-items-center text-sm text-slate-500">
-                    No screenshot
-                  </div>
+                    <div className="grid h-28 place-items-center text-sm text-slate-500">
+                      No screenshot
+                    </div>
 
-                )}
+                  )}
 
-              </div>
+                </div>
 
-            ))}
+              ))}
+            </div>
           </div>
         </GlassPanel>
 
@@ -420,7 +546,7 @@ export function ReportsPage() {
               <p className="text-sm text-slate-400">Latest evidence captured with playback-ready traces</p>
             </div>
           </div>
-          <div className="mt-6 space-y-3">
+          <div className="mt-6 max-h-[720px] overflow-y-auto space-y-3 pr-2">
             {artifacts.map((item) => (
               item.video && (
                 <video

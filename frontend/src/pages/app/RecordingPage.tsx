@@ -242,70 +242,144 @@ export function RecordingPage() {
           </div>
         </GlassPanel>
 
-        <GlassPanel className="p-6">
-          <div className="flex items-center justify-between gap-3">
+        <GlassPanel className="h-[760px] overflow-hidden p-0">
+
+          {/* HEADER */}
+          <div className="flex items-center justify-between border-b border-white/10 px-6 py-5">
+
             <div>
-              <h3 className="text-lg font-semibold text-white">Recorded workflow timeline</h3>
-              <p className="mt-1 text-sm text-slate-400">Action history with selectors, timings, and AI-enhanced statuses</p>
+              <h3 className="text-xl font-semibold text-white">
+                Recorded workflow timeline
+              </h3>
+
+              <p className="mt-1 text-sm text-slate-400">
+                Action history with selectors, timings, and AI-enhanced statuses
+              </p>
             </div>
+
             <ActionButton
               variant="secondary"
               onClick={exportJSON}
+              className="rounded-2xl"
             >
               Export JSON
             </ActionButton>
+
           </div>
-          <div className="mt-6 space-y-4">
+
+          {/* SCROLL AREA */}
+          <div className="h-[650px] overflow-y-auto p-5 space-y-4">
+
             {data.recordingSteps.map((step, index) => (
-              <div key={step.id} className="flex gap-4 rounded-3xl border border-white/10 bg-white/5 p-4">
-                <div className="flex flex-col items-center">
-                  <div className="grid h-10 w-10 place-items-center rounded-2xl bg-cyan-400/10 text-cyan-200">{index + 1}</div>
-                  {index < data.recordingSteps.length - 1 ? <div className="mt-2 h-full w-px bg-white/10" /> : null}
-                </div>
-                <div className="flex-1">
-                  <div className="flex flex-wrap items-center justify-between gap-3">
-                    <div>
-                      <p className="text-sm font-semibold text-white">{step.action}</p>
-                      <div className="mt-1 space-y-1">
-                        <p className="font-mono text-xs text-slate-500">
-                          {step.selector}
-                        </p>
-                        {
-                          step.value && (
-                            <p className="text-xs text-cyan-300">
-                              Value:
-                              {step.value}
-                            </p>
-                          )
-                        }
+              
+
+              <div
+                key={step.id || index}
+                className="relative rounded-[28px] border border-white/10 bg-gradient-to-br from-slate-900/90 to-slate-950/40 p-4"                >
+
+                <div className="flex gap-5">
+
+                  {/* LEFT TIMELINE */}
+                  <div className="flex flex-col items-center">
+
+                    <div className="grid h-10 w-10 place-items-center rounded-2xl bg-cyan-400/10 text-sm font-semibold text-cyan-200 shadow-lg shadow-cyan-500/10">
+{index + 1}                    </div>
+
+                    {index <
+                      data.recordingSteps.length - 1 && (
+                        <div className="mt-3 h-full w-px bg-gradient-to-b from-cyan-400/30 to-transparent" />
+                      )}
+
+                  </div>
+
+                  {/* CONTENT */}
+                  <div className="min-w-0 flex-1">
+
+                    <div className="flex flex-wrap items-start justify-between gap-4">
+
+                      <div className="min-w-0 flex-1">
+
+                        <div className="flex items-center gap-3">
+
+                          <h4 className="text-base font-semibold capitalize text-white">
+                            {step.action}
+                          </h4>
+
+                          <div className="rounded-full bg-white/5 px-3 py-1 text-[10px] uppercase tracking-[0.2em] text-slate-400">
+                            Step
+                          </div>
+
+                        </div>
+
+                        <div className="mt-3 rounded-2xl border border-white/5 bg-black/20 px-4 py-3">
+                          <p className="break-all font-mono text-xs leading-6 text-cyan-300">
+                            {step.selector || "No selector"}
+                          </p>
+
+                          {step.value && (
+
+                            <div className="mt-3 rounded-xl bg-cyan-400/5 px-3 py-2">
+
+                              <p className="text-xs text-cyan-200">
+                                Value: {step.value}
+                              </p>
+
+                            </div>
+
+                          )}
+
+                        </div>
+
                       </div>
+
+                      <StatusPill
+                        label={step.status}
+                        tone={
+                          step.status === "healed"
+                            ? "info"
+                            : step.status === "optimized"
+                              ? "success"
+                              : "warning"
+                        }
+                      />
+
                     </div>
-                    <StatusPill
-                      label={step.status}
-                      tone={
-                        step.status === 'healed'
-                          ? 'info'
-                          : step.status === 'optimized'
-                            ? 'success'
-                            : 'warning'
-                      } />
+
+                    {/* FOOTER */}
+                    <div className="mt-3 flex flex-wrap items-center gap-3 text-xs uppercase tracking-[0.22em] text-slate-500">
+
+                      <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1">
+
+                        {step.timestamp
+                          ? new Date(
+                            step.timestamp
+                          ).toLocaleTimeString()
+                          : step.duration}
+
+                      </span>
+
+                      <span>•</span>
+
+                      <span>
+
+                        {step.status === "healed"
+                          ? "AI patched"
+                          : "Stable capture"}
+
+                      </span>
+
+                    </div>
+
                   </div>
-                  <div className="mt-3 flex flex-wrap items-center gap-3 text-xs uppercase tracking-[0.22em] text-slate-500">
-                    <span>
-                      {
-                        step.timestamp
-                          ? new Date(step.timestamp)
-                            .toLocaleTimeString()
-                          : step.duration
-                      }
-                    </span>
-                    <span>•</span>
-                    <span>{step.status === 'healed' ? 'AI patched' : 'Stable capture'}</span>
-                  </div>
+
                 </div>
+
               </div>
+
             ))}
+
           </div>
+
         </GlassPanel>
       </div>
 

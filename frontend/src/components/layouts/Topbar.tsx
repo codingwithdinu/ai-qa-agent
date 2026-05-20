@@ -2,10 +2,16 @@ import { ChevronDown, Bell, LogOut, Menu, Search, Settings, Sparkles, User } fro
 import { useState } from 'react'
 import { useAppContext } from '../../context/AppContext'
 import { ThemeToggle } from '../ui/ThemeToggle'
+import { useNotifications } from "../../context/NotificationContext";
+
+
+type NotificationType = {
+  title: string;
+  message: string;
+};
 
 export function Topbar() {
   const {
-    notifications,
     projects,
     selectedProject,
     setSelectedProject,
@@ -19,8 +25,17 @@ export function Topbar() {
   } = useAppContext()
 
 
+  const {
+    notifications: liveNotifications
+  } = useNotifications();
+
   const [profileOpen, setProfileOpen] =
     useState(false)
+
+  const [
+    isNotificationOpen,
+    setIsNotificationOpen
+  ] = useState(false);
 
   return (
     <header className="sticky top-0 z-30 border-b border-white/10 bg-slate-950/70 px-4 py-4 backdrop-blur-xl sm:px-6">
@@ -131,20 +146,71 @@ export function Topbar() {
 
           <ThemeToggle />
 
-          <button
-            type="button"
-            title="Notifications"
-            className="relative inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-slate-300 transition hover:text-white"
-          >
+          <div className="relative">
 
-            <Bell className="h-5 w-5" />
+            <button onClick={() =>
+              setIsNotificationOpen(
+                !isNotificationOpen
+              )
+            }
+              type="button"
+              title="Notifications"
+              className="relative inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-slate-300 transition hover:text-white"
+            >
 
-            {notifications.length > 0 && (
+              <Bell className="h-5 w-5" />
 
-              <span className="absolute right-2 top-2 h-2.5 w-2.5 rounded-full bg-cyan-400 shadow-[0_0_15px_rgba(34,211,238,0.8)]" />
-            )}
+              {liveNotifications.length > 0 && (
 
-          </button>
+                <span className="absolute right-2 top-2 h-2.5 w-2.5 rounded-full bg-cyan-400 shadow-[0_0_15px_rgba(34,211,238,0.8)]" />
+              )}
+
+            </button>
+
+            {
+              isNotificationOpen && (
+                <div className="absolute right-0 top-14 z-50 w-80 rounded-2xl border border-white/10 bg-slate-950 p-3 shadow-2xl">
+                  <h3 className="mb-3 text-sm font-semibold text-white">
+                    Notifications
+                  </h3>
+
+                  <div className="max-h-96 space-y-2 overflow-y-auto">
+
+                    {liveNotifications.length === 0 ? (
+
+                      <p className="text-sm text-slate-500">
+                        No notifications
+                      </p>
+
+                    ) : (
+
+                      liveNotifications.map(
+                        (
+                          notification: NotificationType,
+                          index: number
+                        ) => (
+                          <div
+                            key={index}
+                            className="rounded-xl border border-white/10 bg-white/5 p-3"
+                          >
+
+                            <h4 className="text-sm font-medium text-white">
+                              {notification.title}
+                            </h4>
+
+                            <p className="mt-1 text-xs text-slate-400">
+                              {notification.message}
+                            </p>
+
+                          </div>
+                        ))
+                    )}
+
+                  </div>
+                </div>
+              )}
+          </div>
+
 
           <div className="relative flex items-center">
             <div
@@ -176,7 +242,7 @@ export function Topbar() {
                 <p className="text-xs text-slate-500">
 
                   {user?.email ||
-                    'Guest User'} · {notifications.length} alerts
+                    'Guest User'} · {liveNotifications.length} alerts
 
                 </p>
 
@@ -211,13 +277,7 @@ export function Topbar() {
                     Profile
                   </button>
 
-                  <button
-                    type="button"
-                    className="flex w-full items-center gap-3 rounded-xl px-3 py-3 text-sm text-slate-300 transition hover:bg-white/5 hover:text-white"
-                  >
-                    <Settings className="h-4 w-4" />
-                    Settings
-                  </button>
+
 
                   <button
                     type="button"

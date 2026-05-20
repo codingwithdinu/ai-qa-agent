@@ -46,10 +46,23 @@ export async function startRecording(
      * Launch Playwright Browser
      */
     browser = await chromium.launch({
+
       headless: false,
+
+      channel: "chrome",
+
+      args: [
+
+        "--new-window",
+
+        "--start-maximized",
+      ],
     });
 
-    const context = await browser.newContext();
+    const context = await browser.newContext({
+
+      viewport: null,
+    });
 
     /**
      * Injector path
@@ -71,6 +84,10 @@ export async function startRecording(
      * Create page
      */
     page = await context.newPage();
+
+
+    await page.bringToFront();
+
 
     /**
      * Bridge frontend injector
@@ -99,10 +116,12 @@ export async function startRecording(
      */
     await page.goto(url, {
 
-      waitUntil: "domcontentloaded",
+      waitUntil: "load",
 
       timeout: 60000,
     });
+
+    await page.bringToFront();
     /**
      * Inject recorder script
      */

@@ -742,3 +742,199 @@
 [2026-05-19T12:54:00.860Z] INFO: Generated Playwright code for 6 events
 [2026-05-19T12:54:13.366Z] INFO: Generated Playwright code for 6 events
 [2026-05-19T12:54:13.796Z] INFO: Generated Playwright code for 6 events
+[2026-05-19T13:34:40.653Z] INFO: User aiv86651@gmail.com logged in
+[2026-05-19T13:53:39.982Z] INFO: Generated Playwright code for 6 events
+[2026-05-19T13:53:40.432Z] INFO: Generated Playwright code for 6 events
+[2026-05-19T13:54:10.473Z] INFO: User aiv86651@gmail.com logged in
+[2026-05-19T14:15:29.345Z] INFO: Recording started: 9ce4372a-1035-49e5-bc3b-ad322424a15a {"sessionId":"demo-session","url":"https://sophia.edu-it.in/"}
+[2026-05-19T14:15:30.451Z] INFO: 🎥 Playwright browser launched
+[2026-05-19T14:15:46.030Z] INFO: Recording stopped: 9ce4372a-1035-49e5-bc3b-ad322424a15a {"totalEvents":2}
+[2026-05-19T14:15:47.896Z] INFO: Generated Playwright code for 2 events
+[2026-05-19T14:16:44.940Z] INFO: Recording started: 37266ae0-460b-41f2-a81e-e5e3287c778d {"sessionId":"demo-session","url":"https://sophia.edu-it.in/"}
+[2026-05-19T14:16:45.530Z] INFO: 🎥 Playwright browser launched
+[2026-05-19T14:17:14.356Z] ERROR: Failed to stop recording {}
+[2026-05-19T14:17:21.094Z] ERROR: Failed to stop recording {}
+[2026-05-19T14:17:30.196Z] INFO: Recording started: 71b29a1f-d3a3-450e-bf39-de2010c69869 {"sessionId":"demo-session","url":"https://sophia.edu-it.in/"}
+[2026-05-19T14:17:30.796Z] INFO: 🎥 Playwright browser launched
+[2026-05-19T14:17:36.120Z] INFO: Recording stopped: 71b29a1f-d3a3-450e-bf39-de2010c69869 {"totalEvents":1}
+[2026-05-19T14:17:36.700Z] INFO: Generated Playwright code for 1 events
+[2026-05-19T14:18:13.295Z] INFO: Recording started: 0c71bc3b-c856-4971-b669-072f41f246cf {"sessionId":"demo-session","url":"https://sophia.edu-it.in/"}
+[2026-05-19T14:18:13.895Z] INFO: 🎥 Playwright browser launched
+[2026-05-19T14:18:26.276Z] INFO: Recording started: 2e087e3b-e698-459d-9a8b-368752bb847d {"sessionId":"demo-session","url":"https://sophia.edu-it.in/"}
+[2026-05-19T14:18:26.857Z] INFO: 🎥 Playwright browser launched
+[2026-05-19T14:18:30.610Z] INFO: Recording stopped: 2e087e3b-e698-459d-9a8b-368752bb847d {"totalEvents":1}
+[2026-05-19T14:18:31.600Z] INFO: Generated Playwright code for 1 events
+[2026-05-19T14:20:13.822Z] INFO: Recording started: 63e14e72-9fab-4301-ac45-1a31877d0813 {"sessionId":"demo-session","url":"https://sophia.edu-it.in/"}
+[2026-05-19T14:20:14.745Z] INFO: 🎥 Playwright browser launched
+[2026-05-19T14:20:33.601Z] INFO: Recording stopped: 63e14e72-9fab-4301-ac45-1a31877d0813 {"totalEvents":1}
+[2026-05-19T14:20:34.451Z] INFO: Generated Playwright code for 1 events
+[2026-05-19T14:20:35.577Z] INFO: Recording started: dd415d26-6f0c-4cb2-a313-4a4e543bc4ce {"sessionId":"demo-session","url":"https://sophia.edu-it.in/"}
+[2026-05-19T14:20:36.212Z] INFO: 🎥 Playwright browser launched
+[2026-05-19T14:20:52.329Z] INFO: Recording stopped: dd415d26-6f0c-4cb2-a313-4a4e543bc4ce {"totalEvents":1}
+[2026-05-19T14:20:53.145Z] INFO: Generated Playwright code for 1 events
+[2026-05-19T14:21:19.901Z] INFO: Recording started: 6c652a03-eda3-4e55-9938-5e7c0c592ecb {"sessionId":"demo-session","url":"https://sophia.edu-it.in/"}
+[2026-05-19T14:21:20.497Z] INFO: 🎥 Playwright browser launched
+[2026-05-19T14:21:23.758Z] INFO: Recording stopped: 6c652a03-eda3-4e55-9938-5e7c0c592ecb {"totalEvents":1}
+[2026-05-19T14:21:24.523Z] INFO: Generated Playwright code for 1 events
+[2026-05-19T14:21:32.897Z] INFO: Recording started: 80657606-1185-4bab-94f6-a7933b1b08b7 {"sessionId":"demo-session","url":"https://sophia.edu-it.in/"}
+[2026-05-19T14:21:33.645Z] INFO: 🎥 Playwright browser launched
+[2026-05-19T14:21:36.248Z] INFO: Recording stopped: 80657606-1185-4bab-94f6-a7933b1b08b7 {"totalEvents":1}
+[2026-05-19T14:21:36.835Z] INFO: Generated Playwright code for 1 events
+[2026-05-19T14:22:35.535Z] INFO: Recording started: 3d828ab0-0e18-46a9-8294-2b5241897e3e {"sessionId":"demo-session","url":"https://sophia.edu-it.in/"}
+[2026-05-19T14:22:36.196Z] INFO: 🎥 Playwright browser launched
+[2026-05-19T14:22:43.035Z] INFO: Recording stopped: 3d828ab0-0e18-46a9-8294-2b5241897e3e {"totalEvents":1}
+[2026-05-19T14:22:43.897Z] INFO: Generated Playwright code for 1 events
+[2026-05-19T14:24:09.368Z] INFO: Recording started: 9a0e123c-173a-4707-9032-c94a11dba0a9 {"sessionId":"demo-session","url":"https://sophia.edu-it.in/"}
+[2026-05-19T14:24:09.969Z] INFO: 🎥 Playwright browser launched
+[2026-05-19T14:24:11.384Z] INFO: Recording stopped: 9a0e123c-173a-4707-9032-c94a11dba0a9 {"totalEvents":1}
+[2026-05-19T14:24:12.220Z] INFO: Generated Playwright code for 1 events
+[2026-05-19T14:26:34.730Z] INFO: Recording started: e93257de-f790-40de-9f71-2c3b633954ae {"sessionId":"demo-session","url":"https://sophia.edu-it.in/"}
+[2026-05-19T14:26:35.326Z] INFO: 🎥 Playwright browser launched
+[2026-05-19T14:26:41.464Z] INFO: Recording stopped: e93257de-f790-40de-9f71-2c3b633954ae {"totalEvents":1}
+[2026-05-19T14:26:42.510Z] INFO: Generated Playwright code for 1 events
+[2026-05-19T14:31:46.596Z] INFO: Recording started: 21a43047-4ef3-4674-89da-b83ce928ecac {"sessionId":"demo-session","url":"https://sophia.edu-it.in/"}
+[2026-05-19T14:31:47.241Z] INFO: 🎥 Playwright browser launched
+[2026-05-19T14:31:58.611Z] INFO: Recording stopped: 21a43047-4ef3-4674-89da-b83ce928ecac {"totalEvents":6}
+[2026-05-19T14:31:59.463Z] INFO: Generated Playwright code for 6 events
+[2026-05-19T14:35:39.941Z] INFO: Recording started: 100e8cae-bb97-42a3-921b-e36595a44f1b {"sessionId":"demo-session","url":"https://sophia.edu-it.in/"}
+[2026-05-19T14:35:40.566Z] INFO: 🎥 Playwright browser launched
+[2026-05-19T14:38:09.230Z] INFO: Recording stopped: 100e8cae-bb97-42a3-921b-e36595a44f1b {"totalEvents":1}
+[2026-05-19T14:38:10.044Z] INFO: Generated Playwright code for 1 events
+[2026-05-19T14:38:37.094Z] INFO: Generated Playwright code for 1 events
+[2026-05-19T14:38:37.733Z] INFO: Generated Playwright code for 1 events
+[2026-05-19T14:41:45.539Z] INFO: Recording started: 3f3d22b1-8252-4535-b04c-7f6da0e1bf63 {"sessionId":"demo-session","url":"https://sophia.edu-it.in/"}
+[2026-05-19T14:41:46.165Z] INFO: 🎥 Playwright browser launched
+[2026-05-19T14:41:53.785Z] INFO: Recording stopped: 3f3d22b1-8252-4535-b04c-7f6da0e1bf63 {"totalEvents":2}
+[2026-05-19T14:41:54.581Z] INFO: Generated Playwright code for 2 events
+[2026-05-19T14:42:23.422Z] INFO: Recording started: 3386ace0-0a3b-44f1-a0a4-e9b7badcc2da {"sessionId":"demo-session","url":"https://sophia.edu-it.in/"}
+[2026-05-19T14:42:24.053Z] INFO: 🎥 Playwright browser launched
+[2026-05-19T14:42:25.766Z] INFO: Recording stopped: 3386ace0-0a3b-44f1-a0a4-e9b7badcc2da {"totalEvents":1}
+[2026-05-19T14:42:26.559Z] INFO: Generated Playwright code for 1 events
+[2026-05-19T14:44:19.358Z] INFO: Recording started: d174190f-20f1-4386-97c0-8ffba4f6aed0 {"sessionId":"demo-session","url":"https://sophia.edu-it.in/"}
+[2026-05-19T14:44:19.988Z] INFO: 🎥 Playwright browser launched
+[2026-05-19T14:44:24.139Z] INFO: Recording stopped: d174190f-20f1-4386-97c0-8ffba4f6aed0 {"totalEvents":1}
+[2026-05-19T14:44:24.749Z] INFO: Generated Playwright code for 1 events
+[2026-05-19T14:48:45.266Z] INFO: Recording started: 9eade969-50ff-4819-b521-fe9636bae13f {"sessionId":"demo-session","url":"https://sophia.edu-it.in/"}
+[2026-05-19T14:48:45.947Z] INFO: 🎥 Playwright browser launched
+[2026-05-19T14:48:53.604Z] INFO: Recording stopped: 9eade969-50ff-4819-b521-fe9636bae13f {"totalEvents":1}
+[2026-05-19T14:48:54.403Z] INFO: Generated Playwright code for 1 events
+[2026-05-20T04:18:24.364Z] INFO: User aiv86651@gmail.com logged in
+[2026-05-20T04:18:43.454Z] INFO: Recording started: 16645a03-be3a-49b7-adeb-34e22dbf0dd3 {"sessionId":"demo-session","url":"https://sophia.edu-it.in/"}
+[2026-05-20T04:18:44.353Z] INFO: 🎥 Playwright browser launched
+[2026-05-20T04:18:54.926Z] INFO: Recording stopped: 16645a03-be3a-49b7-adeb-34e22dbf0dd3 {"totalEvents":6}
+[2026-05-20T04:18:55.675Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T04:20:35.045Z] INFO: Generated Playwright code for 1 events
+[2026-05-20T04:20:58.298Z] INFO: Generated Playwright code for 1 events
+[2026-05-20T05:17:15.983Z] INFO: Recording started: 9c02e8c4-f836-4bd3-9ca4-7e857c02bae8 {"sessionId":"demo-session","url":"https://sophia.edu-it.in/"}
+[2026-05-20T05:17:16.760Z] INFO: 🎥 Playwright browser launched
+[2026-05-20T05:17:23.430Z] INFO: Recording stopped: 9c02e8c4-f836-4bd3-9ca4-7e857c02bae8 {"totalEvents":6}
+[2026-05-20T05:17:24.157Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:18:38.556Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:18:38.987Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:18:48.560Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:18:58.566Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:19:08.554Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:19:18.733Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:19:28.760Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:19:38.812Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:19:48.676Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:19:58.621Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:20:09.374Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:20:19.601Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:20:28.545Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:20:38.544Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:20:49.769Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:20:59.359Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:21:09.267Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:21:19.542Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:21:29.384Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:21:39.380Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:21:50.299Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:21:58.449Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:22:00.565Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:22:02.494Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:22:02.890Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:22:12.839Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:22:22.803Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:22:32.903Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:22:42.941Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:22:52.855Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:23:02.911Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:23:12.813Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:23:23.065Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:23:32.833Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:23:43.272Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:23:53.374Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:23:57.980Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:24:08.430Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:24:18.395Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:24:27.795Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:24:38.021Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:24:48.072Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:24:58.382Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:25:08.372Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:25:18.412Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:25:28.373Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:25:38.409Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:25:39.708Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:25:48.197Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:25:54.051Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:25:58.870Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:26:09.549Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:26:19.348Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:26:29.259Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:26:31.401Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:26:41.160Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:26:51.525Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:26:54.356Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:27:06.028Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:27:15.377Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:27:25.371Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:27:35.358Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:27:38.332Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:27:39.366Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:27:49.468Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:28:00.401Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:28:03.863Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:28:14.413Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:28:24.419Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:28:31.884Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:28:41.322Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:28:52.526Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:29:01.538Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:29:01.868Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:29:12.308Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:29:22.262Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:29:31.612Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:29:41.873Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:29:51.848Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:30:01.924Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:30:12.422Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:30:22.690Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:30:32.437Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:30:41.747Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:30:51.792Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:31:02.264Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:31:12.321Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:31:22.275Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:31:32.452Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:31:42.325Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:31:52.368Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:31:53.320Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:32:04.313Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:32:14.413Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:32:24.345Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:32:34.331Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:32:44.592Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:33:00.301Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:33:11.261Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:33:15.336Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:33:26.375Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:33:36.516Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:33:46.578Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:33:56.305Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:34:06.729Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:34:47.596Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T05:34:57.722Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T06:47:53.004Z] INFO: Generated Playwright code for 6 events
+[2026-05-20T06:47:53.408Z] INFO: Generated Playwright code for 6 events

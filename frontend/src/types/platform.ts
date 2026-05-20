@@ -165,6 +165,7 @@ export interface PipelineItem {
   status: 'Passing' | 'Running' | 'Failed' | 'Queued'
   duration: string
   qaGate: string
+  updatedAt?: string
 }
 
 export interface DeploymentEvent {

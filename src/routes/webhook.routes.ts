@@ -210,28 +210,40 @@ router.post("/github", async (req, res) => {
             );
 
 
-            io.emit("dashboard-updated");
-
-
-            io.emit("pipeline-updated", {
-
-                status:
-                    workflowRun.conclusion === "success"
-                        ? "PASSED"
-                        : workflowRun.conclusion === "failure"
-                            ? "FAILED"
-                            : "RUNNING",
-
-                workflow:
-                    workflowRun.name,
-
-                repository:
-                    payload.repository?.full_name,
-
-                branch:
-                    workflowRun.head_branch,
-            });
         }
+        io.emit("notification", {
+            type: "pipeline",
+            title: workflowRun.conclusion === "success"
+                ? "Pipeline Passed"
+                : "Pipeline Failed",
+
+            message: `${workflowRun.name} - ${workflowRun.conclusion}`,
+
+            createdAt: new Date(),
+        });
+
+
+        io.emit("dashboard-updated");
+
+
+        io.emit("pipeline-updated", {
+
+            status:
+                workflowRun.conclusion === "success"
+                    ? "PASSED"
+                    : workflowRun.conclusion === "failure"
+                        ? "FAILED"
+                        : "RUNNING",
+
+            workflow:
+                workflowRun.name,
+
+            repository:
+                payload.repository?.full_name,
+
+            branch:
+                workflowRun.head_branch,
+        });
 
         return res.json({
 

@@ -141,7 +141,7 @@ export function DashboardPage() {
         };
     }, []);
 
-    
+
 
     async function loadExecutions() {
 
@@ -370,59 +370,171 @@ export function DashboardPage() {
                     </ChartCard>
                 </div>
 
-                <div className="grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
-                    <GlassPanel className="p-6">
-                        <div className="mb-5 flex items-center justify-between">
+                <div className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
+
+                    {/* LEFT SIDE */}
+                    <GlassPanel className="h-[760px] overflow-hidden p-0">
+
+                        <div className="flex items-center justify-between border-b border-white/10 px-6 py-5">
+
                             <div>
-                                <h3 className="text-lg font-semibold text-white">Live activity feed</h3>
-                                <p className="mt-1 text-sm text-slate-400">Streaming logs, execution telemetry, healing actions, and CI updates</p>
+                                <h3 className="text-xl font-semibold text-white">
+                                    Live activity feed
+                                </h3>
+
+                                <p className="mt-1 text-sm text-slate-400">
+                                    Streaming logs, execution telemetry, healing actions, and CI updates
+                                </p>
                             </div>
-                            <StatusPill label="WebSocket live" tone="info" />
+
+                            <StatusPill
+                                label="WebSocket Live"
+                                tone="info"
+                            />
+
                         </div>
-                        <div className="space-y-4">
-                            {data.liveActivities.map((activity) => (
-                                <div key={activity.id} className="rounded-3xl border border-white/8 bg-white/5 p-4">
-                                    <div className="flex flex-wrap items-center justify-between gap-3">
-                                        <div>
-                                            <p className="text-sm font-semibold text-white">{activity.title}</p>
-                                            <p className="mt-1 text-sm text-slate-400">{activity.detail}</p>
+
+                        <div className="h-[680px] overflow-y-auto p-5 space-y-5">
+
+                            {[...data.liveActivities]
+                                .reverse()
+                                .map((activity) => (
+
+                                    <div
+                                        key={activity.id}
+                                        className="rounded-[30px] border border-white/10 bg-gradient-to-br from-slate-900/80 to-slate-950/40 p-5 transition hover:border-cyan-400/30 hover:bg-slate-900/90"
+                                    >
+
+                                        <div className="flex items-start justify-between gap-4">
+
+                                            <div className="flex items-start gap-4">
+
+                                                <div className="mt-1 rounded-2xl bg-cyan-400/10 p-3 text-cyan-300">
+                                                    <ActivitySquare className="h-5 w-5" />
+                                                </div>
+
+                                                <div>
+
+                                                    <h4 className="text-base font-semibold text-white">
+                                                        {activity.title}
+                                                    </h4>
+
+                                                    <p className="mt-2 text-sm leading-7 text-slate-400 break-all">
+                                                        {activity.detail}
+                                                    </p>
+
+                                                </div>
+
+                                            </div>
+
+                                            <StatusPill
+                                                label={
+                                                    activity.status === 'success'
+                                                        ? 'Stable'
+                                                        : activity.status === 'warning'
+                                                            ? 'Needs attention'
+                                                            : 'Observed'
+                                                }
+
+                                                tone={
+                                                    activity.status === 'success'
+                                                        ? 'success'
+                                                        : activity.status === 'warning'
+                                                            ? 'warning'
+                                                            : 'info'
+                                                }
+                                            />
+
                                         </div>
-                                        <StatusPill
-                                            label={activity.status === 'success' ? 'Stable' : activity.status === 'warning' ? 'Needs attention' : 'Observed'}
-                                            tone={activity.status === 'success' ? 'success' : activity.status === 'warning' ? 'warning' : 'info'}
-                                        />
+
+                                        <div className="mt-5 flex items-center gap-3 text-xs uppercase tracking-[0.24em] text-slate-500">
+
+                                            <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1">
+                                                {activity.actor}
+                                            </span>
+
+                                            <span>•</span>
+
+                                            <span>
+                                                {activity.time}
+                                            </span>
+
+                                        </div>
+
                                     </div>
-                                    <div className="mt-3 flex items-center gap-3 text-xs uppercase tracking-[0.22em] text-slate-500">
-                                        <span>{activity.actor}</span>
-                                        <span>•</span>
-                                        <span>{activity.time}</span>
-                                    </div>
-                                </div>
-                            ))}
+
+                                ))}
+
                         </div>
+
                     </GlassPanel>
 
-                    <GlassPanel className="p-6">
-                        <div className="flex items-center justify-between">
+                    {/* RIGHT SIDE */}
+                    <GlassPanel className="h-[760px] overflow-hidden p-0">
+
+                        <div className="flex items-center justify-between border-b border-white/10 px-6 py-5">
+
                             <div>
-                                <h3 className="text-lg font-semibold text-white">Quality board highlights</h3>
-                                <p className="mt-1 text-sm text-slate-400">High-signal updates for leadership and release teams</p>
+                                <h3 className="text-xl font-semibold text-white">
+                                    Quality board highlights
+                                </h3>
+
+                                <p className="mt-1 text-sm text-slate-400">
+                                    High-signal updates for leadership and release teams
+                                </p>
                             </div>
-                            <ArrowUpRight className="h-5 w-5 text-cyan-300" />
+
+                            <div className="rounded-2xl bg-cyan-400/10 p-3 text-cyan-300">
+                                <ArrowUpRight className="h-5 w-5" />
+                            </div>
+
                         </div>
-                        <div className="mt-6 space-y-4">
-                            {data.liveActivities.map((item) => (
-                                <div key={item.id} className="rounded-3xl border border-white/10 bg-slate-950/60 p-4">
-                                    <div className="flex items-start gap-3">
-                                        <span className="rounded-2xl bg-cyan-400/10 p-2 text-cyan-200">
-                                            <ActivitySquare className="h-4 w-4" />
-                                        </span>
-                                        <p className="text-sm leading-6 text-slate-300">{item.id}</p>
+
+                        <div className="h-[680px] overflow-y-auto p-5 space-y-4">
+
+                            {data.liveActivities.map((item, index) => (
+
+                                <div
+                                    key={item.id || index}
+                                    className="rounded-[28px] border border-white/10 bg-gradient-to-br from-slate-900/90 to-slate-950/50 p-5 transition hover:border-cyan-400/30"
+                                >
+
+                                    <div className="flex items-start gap-4">
+
+                                        <div className="rounded-2xl bg-cyan-400/10 p-3 text-cyan-300">
+                                            <ActivitySquare className="h-5 w-5" />
+                                        </div>
+
+                                        <div className="min-w-0 flex-1">
+
+                                            <div className="flex items-center justify-between gap-3">
+
+                                                <p className="text-sm font-semibold text-white">
+                                                    Build Artifact
+                                                </p>
+
+                                                <span className="rounded-full bg-emerald-400/10 px-3 py-1 text-xs text-emerald-300">
+                                                    Synced
+                                                </span>
+
+                                            </div>
+
+                                            <p className="mt-3 break-all text-sm leading-7 text-slate-400">
+                                                {item.id}
+                                            </p>
+
+                                        </div>
+
                                     </div>
+
                                 </div>
+
                             ))}
+
                         </div>
+
                     </GlassPanel>
+
                 </div>
             </div>
 
@@ -439,6 +551,7 @@ export function DashboardPage() {
                     setRecordingId(id);
                     setRecordingUrl(url);
                     setOpenRecordingModal(false);
+
 
                 }}
             />
