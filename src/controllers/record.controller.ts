@@ -79,7 +79,8 @@ export async function startRecording(req: AuthRequest, res: Response) {
     const {
       sessionId,
       url,
-      workspaceId
+      workspaceId,
+      clientMode
     } = req.body;
 
 
@@ -111,7 +112,10 @@ export async function startRecording(req: AuthRequest, res: Response) {
         sessionId,
         url,
         req.userId!,
-        workspaceId
+        workspaceId,
+        {
+          launchBrowser: !clientMode,
+        }
       );
 
     return res.status(200).json({

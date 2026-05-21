@@ -28,6 +28,11 @@ export function RecordingModal({
 
   const [error, setError] =
     useState("");
+  const recorderMode =
+    import.meta.env.VITE_RECORDER_MODE ||
+    "client";
+  const clientMode =
+    recorderMode !== "server";
 
   if (!open) return null;
 
@@ -48,6 +53,7 @@ export function RecordingModal({
               sessionId: "demo-session",
               workspaceId:
                 selectedWorkspace?.id,
+              clientMode,
             }
           );
 

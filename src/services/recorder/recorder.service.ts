@@ -2,7 +2,7 @@ import { logger } from "../../utils/logger";
 import prisma from "../../config/database";
 import { RecordingEvent } from "../../types/recording.types";
 import { v4 as uuid } from "uuid";
-import { chromium, Browser, Page } from "playwright";
+import { chromium, Browser, Page, type LaunchOptions } from "playwright";
 import fs from "fs";
 import path from "path";
 import { Server } from "socket.io";
@@ -20,7 +20,9 @@ export async function startRecording(
   url: string,
   userId: string,
   workspaceId: string,
-
+  options?: {
+    launchBrowser?: boolean;
+  },
 ): Promise<string> {
   try {
     const recordingId = uuid();
@@ -42,26 +44,37 @@ export async function startRecording(
       url,
     });
 
+    if (options?.launchBrowser === false) {
+      logger.info("Client recorder ready", {
+        recordingId,
+      });
+      return recordingId;
+    }
+
     /**
      * Launch Playwright Browser
      */
-    browser = await chromium.launch({
+    const headless =
+      process.env.PLAYWRIGHT_HEADLESS
+        ? process.env.PLAYWRIGHT_HEADLESS !== "false"
+        : process.env.NODE_ENV === "production";
 
-      headless: false,
+    const launchOptions: LaunchOptions = {
+      headless,
+      args: headless
+        ? ["--no-sandbox", "--disable-dev-shm-usage"]
+        : ["--new-window", "--start-maximized"],
+    };
 
-      channel: "chrome",
+    const channel = process.env.PLAYWRIGHT_CHANNEL;
+    if (channel) {
+      launchOptions.channel = channel;
+    }
 
-      args: [
-
-        "--new-window",
-
-        "--start-maximized",
-      ],
-    });
+    browser = await chromium.launch(launchOptions);
 
     const context = await browser.newContext({
-
-      viewport: null,
+      viewport: headless ? { width: 1366, height: 768 } : null,
     });
 
     /**
@@ -174,14 +187,7 @@ export async function addEventToRecording(
 
     logger.debug(`Event added to recording ${recordingId}`, event);
   } catch (error: any) {
-
-    console.log("❌ REAL ERROR:", error);
-
-    logger.error(
-      "Failed to add event to recording",
-      error
-    );
-
+    logger.error("Failed to add event to recording", error);
     throw error;
   }
 }
@@ -193,9 +199,16 @@ export async function stopRecording(
   recordingId: string
 ): Promise<any> {
   try {
+    const targetRecordingId =
+      recordingId || currentRecordingId;
+
+    if (!targetRecordingId) {
+      throw new Error("Recording not found");
+    }
+
     const recording = await prisma.recording.findUnique({
       where: {
-        id: currentRecordingId
+        id: targetRecordingId
       },
     });
 
@@ -205,7 +218,7 @@ export async function stopRecording(
 
     const events = JSON.parse(recording.events || "[]") as RecordingEvent[];
 
-    logger.info(`Recording stopped: ${currentRecordingId}`, {
+    logger.info(`Recording stopped: ${targetRecordingId}`, {
       totalEvents: events.length,
     });
 

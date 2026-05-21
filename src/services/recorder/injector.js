@@ -1,9 +1,64 @@
 (() => {
+  if (window.__qaRecorderLoaded) {
+    return;
+  }
+
   window.__qaRecorderLoaded = true;
+
+  const getConfigFromScript = () => {
+    const script = document.currentScript;
+    if (!script || !script.src) return {};
+    try {
+      const url = new URL(script.src);
+      return {
+        recordingId: url.searchParams.get("recordingId"),
+        apiBaseUrl: url.searchParams.get("apiBaseUrl") || url.origin,
+      };
+    } catch {
+      return {};
+    }
+  };
+
+  const config =
+    window.__qaRecorderConfig ||
+    getConfigFromScript();
+
+  const apiBaseUrl =
+    (config.apiBaseUrl || "")
+      .toString()
+      .replace(/\/$/, "");
+
+  const recordingId =
+    config.recordingId;
+
+  const sendRecordedEvent = async (payload) => {
+    if (typeof window.sendRecordedEvent === "function") {
+      await window.sendRecordedEvent(payload);
+      return;
+    }
+
+    if (!recordingId || !apiBaseUrl) {
+      console.warn(
+        "Recorder config missing. Provide recordingId and apiBaseUrl.",
+      );
+      return;
+    }
+
+    await fetch(`${apiBaseUrl}/api/record/event`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        recordingId,
+        event: payload,
+      }),
+    });
+  };
 
   console.log("🎥 Recorder Active");
 
-  window.sendRecordedEvent({
+  sendRecordedEvent({
     type: "navigate",
     url: window.location.href,
     timestamp: Date.now(),
@@ -133,7 +188,7 @@
       }
       if (!target) return;
 
-      await window.sendRecordedEvent({
+      await sendRecordedEvent({
         type: "click",
 
         selector: getBestSelector(target),
@@ -157,7 +212,7 @@
       if (!target) return;
 
       if (target.tagName === "INPUT" || target.tagName === "TEXTAREA") {
-        await window.sendRecordedEvent({
+        await sendRecordedEvent({
           type: "input",
 
           selector: getBestSelector(target),

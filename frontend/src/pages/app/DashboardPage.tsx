@@ -47,6 +47,17 @@ export function DashboardPage() {
     const { activities, selectedWorkspace, selectedProject } = useAppContext()
 
     const { pushToast } = useToast()
+    const recorderMode =
+        import.meta.env.VITE_RECORDER_MODE ||
+        "client";
+    const clientRecorderEnabled =
+        recorderMode !== "server";
+    const apiBaseUrl =
+        (import.meta.env.VITE_API_URL ||
+            window.location.origin).replace(
+                /\/$/,
+                ""
+            );
     const [data, setData] =
         useState<DashboardDataState>({
             dashboardStats: [],
@@ -181,6 +192,37 @@ export function DashboardPage() {
         }
     }
 
+    async function copyRecorderBookmarklet() {
+        if (!recordingId) return;
+
+        const bookmarklet =
+            `javascript:(()=>{var s=document.createElement('script');s.src='${apiBaseUrl}/api/record/injector.js?recordingId=${recordingId}';document.head.appendChild(s);})();`;
+        try {
+            await navigator.clipboard.writeText(bookmarklet);
+            pushToast({
+                title: "Recorder copied",
+                description:
+                    "Open the target site and click the bookmarklet to start capture.",
+                tone: "success",
+            });
+        } catch {
+            pushToast({
+                title: "Copy failed",
+                description:
+                    "Clipboard blocked. Please copy manually.",
+                tone: "warning",
+            });
+        }
+    }
+
+    function openRecordingTarget() {
+        if (!recordingUrl) return;
+        window.open(
+            recordingUrl,
+            "_blank",
+            "noopener,noreferrer"
+        );
+    }
 
 
 
@@ -204,42 +246,64 @@ export function DashboardPage() {
                                         Recording ID:
                                         {recordingId}
                                     </p>
+                                    {clientRecorderEnabled && (
+                                        <p className="mt-2 text-sm text-slate-400">
+                                            Open the target site and click the recorder bookmarklet to capture actions.
+                                        </p>
+                                    )}
                                 </div>
-                                <ActionButton
-                                    variant="secondary"
-                                    onClick={async () => {
-                                        try {
-                                            await api.post(
-                                                "/record/stop",
-                                                {
-                                                    recordingId,
-                                                }
-                                            );
+                                <div className="flex flex-wrap gap-3">
+                                    {clientRecorderEnabled && (
+                                        <>
+                                            <ActionButton
+                                                variant="secondary"
+                                                onClick={openRecordingTarget}
+                                            >
+                                                Open Site
+                                            </ActionButton>
+                                            <ActionButton
+                                                variant="secondary"
+                                                onClick={copyRecorderBookmarklet}
+                                            >
+                                                Copy Recorder
+                                            </ActionButton>
+                                        </>
+                                    )}
+                                    <ActionButton
+                                        variant="secondary"
+                                        onClick={async () => {
+                                            try {
+                                                await api.post(
+                                                    "/record/stop",
+                                                    {
+                                                        recordingId,
+                                                    }
+                                                );
 
-                                            setRecording(false)
+                                                setRecording(false)
 
-                                            pushToast({
-                                                title: 'Recording completed',
+                                                pushToast({
+                                                    title: 'Recording completed',
 
-                                                description:
-                                                    'AI test generated successfully.',
+                                                    description:
+                                                        'AI test generated successfully.',
 
-                                                tone: 'success',
-                                            })
+                                                    tone: 'success',
+                                                })
 
-                                        } catch (error) {
+                                            } catch (error) {
 
-                                            console.error(error)
+                                                console.error(error)
 
-                                        }
+                                            }
 
-                                    }}
-                                >
-                                    Stop Recording
-                                </ActionButton>
+                                        }}
+                                    >
+                                        Stop Recording
+                                    </ActionButton>
+                                </div>
 
                             </div>
-
                         </GlassPanel>
                     )
                 }
