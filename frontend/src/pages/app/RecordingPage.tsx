@@ -22,8 +22,8 @@ export function RecordingPage() {
   const [data, setData] = useState<RecordingDataState | null>(null)
   const { pushToast } = useToast()
   const [recording, setRecording] = useState(false)
-  const [recordingId] = useState('')
-  const [recordingUrl] = useState('')
+  const [recordingId, setRecordingId] = useState('')
+  const [recordingUrl, setRecordingUrl] = useState('')
 
   const exportJSON = () => {
 
@@ -155,6 +155,9 @@ export function RecordingPage() {
                           recordingId,
                         }
                       )
+                      
+                    chrome.storage.local.clear()
+
 
                     const stopResult =
                       stopResponse.data
@@ -271,7 +274,7 @@ export function RecordingPage() {
           <div className="h-[650px] overflow-y-auto p-5 space-y-4">
 
             {data.recordingSteps.map((step, index) => (
-              
+
 
               <div
                 key={step.id || index}
@@ -283,7 +286,7 @@ export function RecordingPage() {
                   <div className="flex flex-col items-center">
 
                     <div className="grid h-10 w-10 place-items-center rounded-2xl bg-cyan-400/10 text-sm font-semibold text-cyan-200 shadow-lg shadow-cyan-500/10">
-{index + 1}                    </div>
+                      {index + 1}                    </div>
 
                     {index <
                       data.recordingSteps.length - 1 && (

@@ -57,8 +57,14 @@ export function RecordingModal({
             }
           );
 
-        const result =
-          response.data;
+        const result = response.data
+        
+        chrome.storage.local.set({
+          recording: true,
+          recordingId: result.recordingId,
+        })
+      
+
 
         try {
 
