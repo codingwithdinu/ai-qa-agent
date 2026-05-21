@@ -1,5 +1,40 @@
 console.log("EXTENSION LOADED");
 
+const MESSAGE_SOURCE = "ai-qa-recorder";
+
+window.addEventListener(
+  "message",
+  (event) => {
+    if (event.source !== window) return;
+
+    const data = event.data;
+    if (!data || data.source !== MESSAGE_SOURCE) {
+      return;
+    }
+
+    const payload = data.payload;
+    if (!payload) return;
+
+    const replyPort = event.ports?.[0];
+
+    chrome.runtime.sendMessage(payload, () => {
+      const lastError = chrome.runtime.lastError;
+      if (lastError) {
+        console.error(
+          "Recorder bridge failed",
+          lastError
+        );
+        replyPort?.postMessage({
+          ok: false,
+          error: lastError.message,
+        });
+        return;
+      }
+      replyPort?.postMessage({ ok: true });
+    });
+  }
+);
+
 const API_URL =
   "https://ai-qa-agent-1.onrender.com";
 
