@@ -71,13 +71,35 @@ app.use(
 /**
  * Enable CORS
  */
+const frontendOrigin =
+  process.env.FRONTEND_URL;
+const openRecorderPaths = new Set([
+  "/api/record/event",
+  "/api/record/injector.js",
+]);
+
 app.use(
-  cors({
+  cors((req, callback) => {
+    if (openRecorderPaths.has(req.path)) {
+      callback(null, {
+        origin: true,
+        credentials: false,
+      });
+      return;
+    }
 
-    origin:
-      process.env.FRONTEND_URL!,
+    if (!frontendOrigin) {
+      callback(null, {
+        origin: true,
+        credentials: true,
+      });
+      return;
+    }
 
-    credentials: true,
+    callback(null, {
+      origin: frontendOrigin,
+      credentials: true,
+    });
   })
 );
 /**

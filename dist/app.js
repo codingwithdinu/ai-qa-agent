@@ -58,9 +58,30 @@ app.use((0, helmet_1.default)({
 /**
  * Enable CORS
  */
-app.use((0, cors_1.default)({
-    origin: process.env.FRONTEND_URL,
-    credentials: true,
+const frontendOrigin = process.env.FRONTEND_URL;
+const openRecorderPaths = new Set([
+    "/api/record/event",
+    "/api/record/injector.js",
+]);
+app.use((0, cors_1.default)((req, callback) => {
+    if (openRecorderPaths.has(req.path)) {
+        callback(null, {
+            origin: true,
+            credentials: false,
+        });
+        return;
+    }
+    if (!frontendOrigin) {
+        callback(null, {
+            origin: true,
+            credentials: true,
+        });
+        return;
+    }
+    callback(null, {
+        origin: frontendOrigin,
+        credentials: true,
+    });
 }));
 /**
  * Logger Middleware
