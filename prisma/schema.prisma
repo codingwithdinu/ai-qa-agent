@@ -11,18 +11,23 @@ model Recording {
   id           String   @id @default(uuid())
   sessionId    String?
   url          String?
-  events       String
+
+  events       Json @default("[]")
+
   createdAt    DateTime @default(now())
+
   userId       String
   workspaceId  String
+
   user          User @relation(fields: [userId], references: [id])
   workspace     Workspace @relation(fields: [workspaceId], references: [id])
+
   runs         TestRun[]
   executions   TestExecution[]
+
   @@index([userId])
   @@index([workspaceId])
 }
-
 
 
 model TestRun {
