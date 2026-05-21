@@ -3,6 +3,7 @@ chrome.runtime.onMessage.addListener(async (message) => {
     await chrome.storage.local.set({
       recording: true,
       recordingId: message.recordingId,
+      recordingUrl: message.url,
     });
 
     if (message.url) {
@@ -16,6 +17,7 @@ chrome.runtime.onMessage.addListener(async (message) => {
     await chrome.storage.local.set({
       recording: false,
       recordingId: null,
+      recordingUrl: null,
     });
   }
 });

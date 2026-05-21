@@ -38,6 +38,98 @@ window.addEventListener(
 const API_URL =
   "https://ai-qa-agent-1.onrender.com";
 
+function normalizeText(value) {
+  return (value || "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function getBestSelector(element) {
+  if (!element) {
+    return "unknown";
+  }
+
+  const tag = element.tagName.toLowerCase();
+
+  const testId = element.getAttribute(
+    "data-testid"
+  );
+  if (testId) {
+    return `[data-testid="${testId}"]`;
+  }
+
+  if (element.id && element.id.trim() !== "") {
+    return `#${element.id}`;
+  }
+
+  const aria =
+    element.getAttribute("aria-label");
+  if (aria) {
+    return `${tag}[aria-label="${aria}"]`;
+  }
+
+  const name = element.getAttribute("name");
+  if (name) {
+    return `${tag}[name="${name}"]`;
+  }
+
+  const placeholder =
+    element.getAttribute("placeholder");
+  if (placeholder) {
+    return `${tag}[placeholder="${placeholder}"]`;
+  }
+
+  const href = element.getAttribute("href");
+  if (tag === "a" && href) {
+    return `a[href="${href}"]`;
+  }
+
+  const text = normalizeText(element.innerText);
+  const safeText = text.replace(/"/g, '\\"');
+
+  if (
+    (tag === "a" || tag === "button") &&
+    text &&
+    text.length < 40
+  ) {
+    if (tag === "a") {
+      return `role=link[name="${safeText}"]`;
+    }
+
+    if (tag === "button") {
+      return `role=button[name="${safeText}"]`;
+    }
+  }
+
+  if (
+    element.className &&
+    typeof element.className === "string"
+  ) {
+    const classes = element.className
+      .trim()
+      .split(" ")
+      .filter(
+        (cls) =>
+          cls &&
+          !cls.includes(":") &&
+          !cls.includes("hover") &&
+          !cls.includes("active") &&
+          cls.length < 40
+      )
+      .slice(0, 3)
+      .join(".");
+    if (classes) {
+      return `${tag}.${classes}`;
+    }
+  }
+
+  if (text && text.length < 40) {
+    return `text=${safeText}`;
+  }
+
+  return tag;
+}
+
 document.addEventListener(
   "click",
   async (event) => {
@@ -51,6 +143,7 @@ document.addEventListener(
       await chrome.storage.local.get([
         "recording",
         "recordingId",
+        "recordingUrl",
       ]);
 
     console.log("STATE:", state);
@@ -65,6 +158,47 @@ document.addEventListener(
       return;
     }
 
+    if (state.recordingUrl) {
+      try {
+        const allowedOrigin =
+          new URL(
+            state.recordingUrl
+          ).origin;
+        if (
+          window.location.origin !==
+          allowedOrigin
+        ) {
+          return;
+        }
+      } catch (error) {
+        console.error(
+          "Invalid recordingUrl",
+          error
+        );
+      }
+    }
+
+    let resolvedTarget = target;
+    const badTags = [
+      "svg",
+      "path",
+      "span",
+      "i",
+    ];
+    if (
+      badTags.includes(
+        resolvedTarget.tagName?.toLowerCase()
+      )
+    ) {
+      const clickableParent =
+        resolvedTarget.closest(
+          "button, a, [role='button']"
+        );
+      if (clickableParent) {
+        resolvedTarget = clickableParent;
+      }
+    }
+
     const payload = {
       recordingId:
         state.recordingId,
@@ -73,12 +207,10 @@ document.addEventListener(
         type: "click",
 
         selector:
-          target.id
-            ? `#${target.id}`
-            : target.tagName.toLowerCase(),
+          getBestSelector(resolvedTarget),
 
         text:
-          target.innerText || "",
+          resolvedTarget.innerText || "",
 
         timestamp:
           Date.now(),
