@@ -1,6 +1,6 @@
 import { getExecutions, executeTest, getAnalytics } from "../../services/dashboard.service";
 import { motion } from 'framer-motion'
-import { ActivitySquare, ArrowUpRight, Bot, Clock4, GitBranchPlus, ShieldCheck } from 'lucide-react'
+import { ActivitySquare, ArrowUpRight, Bot, Clock4, Download, GitBranchPlus, ShieldCheck } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, Cell, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis, } from 'recharts'
 import { ActionButton } from '../../components/ui/ActionButton'
@@ -225,6 +225,14 @@ export function DashboardPage() {
         );
     }
 
+    function downloadExtensionZip() {
+        window.open(
+            `${apiBaseUrl}/api/extension/download`,
+            "_blank",
+            "noopener,noreferrer"
+        );
+    }
+
 
 
 
@@ -320,6 +328,13 @@ export function DashboardPage() {
                     action={
                         <>
                             <ActionButton variant="secondary">Share board</ActionButton>
+                            <ActionButton
+                                variant="secondary"
+                                onClick={downloadExtensionZip}
+                            >
+                                <Download className="mr-2 h-4 w-4" />
+                                Download extension
+                            </ActionButton>
                             <ActionButton
                                 onClick={() =>
                                     setOpenRecordingModal(true)

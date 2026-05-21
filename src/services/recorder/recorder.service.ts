@@ -177,6 +177,46 @@ export async function addEventToRecording(
       throw new Error("Recording not found");
     }
 
+    if (recording.url && (event as any)?.url) {
+      try {
+        const recordingOrigin = new URL(recording.url).origin;
+        const eventOrigin = new URL(
+          (event as any).url
+        ).origin;
+
+        if (recordingOrigin !== eventOrigin) {
+          logger.info("Skipping event from different origin", {
+            recordingId,
+            recordingOrigin,
+            eventOrigin,
+          });
+          return;
+        }
+      } catch (error: any) {
+        logger.warn("Failed to compare event origin", {
+          recordingId,
+          error: error?.message || error,
+        });
+      }
+    }
+
+    if (event?.type === "click" && event.selector) {
+      const selector = event.selector.trim();
+      const rawText =
+        typeof (event as any).text === "string"
+          ? (event as any).text
+          : "";
+      const text = rawText.replace(/\s+/g, " ").trim();
+
+      if (text && selector === "a") {
+        event.selector =
+          `role=link[name="${text.replace(/"/g, '\\"')}"]`;
+      } else if (text && selector === "button") {
+        event.selector =
+          `role=button[name="${text.replace(/"/g, '\\"')}"]`;
+      }
+    }
+
     const events = Array.isArray(recording.events)
       ? [...recording.events]
       : [];

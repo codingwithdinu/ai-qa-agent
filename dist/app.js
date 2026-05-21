@@ -33,6 +33,7 @@ const healing_routes_1 = __importDefault(require("./routes/healing.routes"));
 const results_routes_1 = __importDefault(require("./routes/results.routes"));
 const github_routes_1 = __importDefault(require("./routes/github.routes"));
 const webhook_routes_1 = __importDefault(require("./routes/webhook.routes"));
+const extension_routes_1 = __importDefault(require("./routes/extension.routes"));
 const app = (0, express_1.default)();
 const publicDir = path_1.default.resolve(process.cwd(), "public");
 const dashboardState = {
@@ -143,6 +144,7 @@ app.use("/api/test-results", results_routes_1.default);
 app.use("/test-results", express_1.default.static(path_1.default.resolve("test-results")));
 app.use("/api/github", github_routes_1.default);
 app.use("/api/webhooks", webhook_routes_1.default);
+app.use("/api/extension", extension_routes_1.default);
 app.get("/api/state", async (_req, res) => {
     const recordingCount = await database_1.default.recording.count();
     const testRunCount = await database_1.default.testRun.count();

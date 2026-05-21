@@ -28,6 +28,7 @@ import healingRoutes from "./routes/healing.routes";
 import resultsRoutes from "./routes/results.routes";
 import githubRoutes from "./routes/github.routes";
 import webhookRoutes from "./routes/webhook.routes";
+import extensionRoutes from "./routes/extension.routes";
 
 
 
@@ -178,6 +179,7 @@ app.use("/api/test-results", resultsRoutes);
 app.use("/test-results", express.static(path.resolve("test-results")));
 app.use("/api/github", githubRoutes);
 app.use("/api/webhooks", webhookRoutes);
+app.use("/api/extension", extensionRoutes);
 
 
 app.get("/api/state", async (_req: Request, res: Response) => {
