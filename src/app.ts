@@ -75,7 +75,7 @@ app.use(
   cors({
 
     origin:
-      "https://ai-qa-agent-rho.vercel.app",
+      process.env.FRONTEND_URL!,
 
     credentials: true,
   })

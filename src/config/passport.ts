@@ -53,7 +53,7 @@ passport.use(
         process.env.GOOGLE_CLIENT_SECRET!,
 
       callbackURL:
-        "https://ai-qa-agent-1.onrender.com/api/auth/google/callback",
+        process.env.CALL_BACK_URL_GOOGLE!,
     },
 
     async (
@@ -120,7 +120,7 @@ passport.use(
         process.env.GITHUB_CLIENT_SECRET!,
 
       callbackURL:
-        "https://ai-qa-agent-1.onrender.com/api/auth/github/callback",
+        process.env.CALL_BACK_URL_GITHUB!,
     },
 
     async (

@@ -5,15 +5,7 @@ import { v4 as uuid } from "uuid";
 import { chromium, Browser, Page } from "playwright";
 import fs from "fs";
 import path from "path";
-import { execSync } from "child_process";
-
-try {
-  execSync("npx playwright install chromium", {
-    stdio: "inherit",
-  });
-} catch (e) {
-  console.log("Playwright already installed");
-}
+import { Server } from "socket.io";
 
 
 let browser: Browser | null = null;
@@ -55,9 +47,16 @@ export async function startRecording(
      */
     browser = await chromium.launch({
 
-      headless: true,
-      args: ["--no-sandbox"],
+      headless: false,
 
+      channel: "chrome",
+
+      args: [
+
+        "--new-window",
+
+        "--start-maximized",
+      ],
     });
 
     const context = await browser.newContext({
@@ -175,7 +174,15 @@ export async function addEventToRecording(
 
     logger.debug(`Event added to recording ${recordingId}`, event);
   } catch (error: any) {
-    logger.error("Failed to add event to recording", error);
+
+    console.log("❌ REAL ERROR:", error);
+
+    logger.error(
+      "Failed to add event to recording",
+      error
+    );
+
+    throw error;
   }
 }
 

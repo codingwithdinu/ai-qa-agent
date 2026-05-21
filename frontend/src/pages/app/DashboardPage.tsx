@@ -127,7 +127,10 @@ export function DashboardPage() {
         socket.on(
             "dashboard-updated",
             () => {
-               
+                console.log(
+                    "📊 Dashboard updated"
+                );
+
                 loadExecutions();
             }
         );
