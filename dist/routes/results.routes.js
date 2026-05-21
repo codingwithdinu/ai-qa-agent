@@ -25,6 +25,33 @@ router.get("/", auth_middleware_1.authMiddleware, async (req, res) => {
     const allowedIds = recordings.map((r) => r.id);
     const folders = fs_1.default.readdirSync(resultsPath)
         .filter(folder => allowedIds.includes(folder));
+    const baseUrl = `${req.protocol}://${req.get("host")}`;
+    const findArtifact = (folderPath, extension) => {
+        const stack = [folderPath];
+        while (stack.length > 0) {
+            const current = stack.pop();
+            if (!current)
+                continue;
+            const entries = fs_1.default.readdirSync(current, {
+                withFileTypes: true,
+            });
+            for (const entry of entries) {
+                const entryPath = path_1.default.join(current, entry.name);
+                if (entry.isDirectory()) {
+                    stack.push(entryPath);
+                    continue;
+                }
+                if (entry.isFile() &&
+                    entry.name.endsWith(extension)) {
+                    return entryPath;
+                }
+            }
+        }
+        return null;
+    };
+    const buildUrl = (filePath) => `${baseUrl}/test-results/${path_1.default
+        .relative(resultsPath, filePath)
+        .replace(/\\/g, "/")}`;
     const cleanedResults = folders
         .filter(folder => {
         const folderPath = path_1.default.join(resultsPath, folder);
@@ -33,29 +60,21 @@ router.get("/", auth_middleware_1.authMiddleware, async (req, res) => {
     })
         .map(folder => {
         const folderPath = path_1.default.join(resultsPath, folder);
-        let finalPath = folderPath;
-        const nestedFolders = fs_1.default.readdirSync(folderPath)
-            .filter(file => fs_1.default.statSync(path_1.default.join(folderPath, file)).isDirectory());
-        if (nestedFolders.length > 0) {
-            finalPath =
-                path_1.default.join(folderPath, nestedFolders[0]);
-        }
-        const files = fs_1.default.readdirSync(finalPath);
-        const stats = fs_1.default.statSync(finalPath);
-        const screenshotFile = files.find(file => file.endsWith(".png"));
-        const videoFile = files.find(file => file.endsWith(".webm"));
-        const traceFile = files.find(file => file.endsWith(".zip"));
+        const stats = fs_1.default.statSync(folderPath);
+        const screenshotPath = findArtifact(folderPath, ".png");
+        const videoPath = findArtifact(folderPath, ".webm");
+        const tracePath = findArtifact(folderPath, ".zip");
         return {
             id: folder,
             createdAt: stats.birthtime,
-            screenshot: screenshotFile
-                ? `https://ai-qa-agent-1.onrender.com/test-results/${folder}/${nestedFolders[0]}/${screenshotFile}`
+            screenshot: screenshotPath
+                ? buildUrl(screenshotPath)
                 : null,
-            video: videoFile
-                ? `https://ai-qa-agent-1.onrender.com/test-results/${folder}/${nestedFolders[0]}/${videoFile}`
+            video: videoPath
+                ? buildUrl(videoPath)
                 : null,
-            trace: traceFile
-                ? `https://ai-qa-agent-1.onrender.com/test-results/${folder}/${nestedFolders[0]}/${traceFile}`
+            trace: tracePath
+                ? buildUrl(tracePath)
                 : null,
         };
     })

@@ -45,6 +45,51 @@ router.get("/", authMiddleware, async (req: AuthRequest, res) => {
         allowedIds.includes(folder)
 
       );
+
+  const baseUrl =
+    `${req.protocol}://${req.get("host")}`;
+
+  const findArtifact = (
+    folderPath: string,
+    extension: string
+  ): string | null => {
+    const stack = [folderPath];
+
+    while (stack.length > 0) {
+      const current = stack.pop();
+      if (!current) continue;
+
+      const entries = fs.readdirSync(current, {
+        withFileTypes: true,
+      });
+
+      for (const entry of entries) {
+        const entryPath = path.join(
+          current,
+          entry.name
+        );
+
+        if (entry.isDirectory()) {
+          stack.push(entryPath);
+          continue;
+        }
+
+        if (
+          entry.isFile() &&
+          entry.name.endsWith(extension)
+        ) {
+          return entryPath;
+        }
+      }
+    }
+
+    return null;
+  };
+
+  const buildUrl = (filePath: string) =>
+    `${baseUrl}/test-results/${path
+      .relative(resultsPath, filePath)
+      .replace(/\\/g, "/")}`;
   const cleanedResults = folders
 
 
@@ -64,46 +109,17 @@ router.get("/", authMiddleware, async (req: AuthRequest, res) => {
       const folderPath =
         path.join(resultsPath, folder);
 
-      let finalPath = folderPath;
-
-      const nestedFolders =
-        fs.readdirSync(folderPath)
-          .filter(file =>
-            fs.statSync(
-              path.join(folderPath, file)
-            ).isDirectory()
-          );
-
-      if (nestedFolders.length > 0) {
-
-        finalPath =
-          path.join(
-            folderPath,
-            nestedFolders[0]
-          );
-
-      }
-
-      const files =
-        fs.readdirSync(finalPath);
-
       const stats =
-        fs.statSync(finalPath);
+        fs.statSync(folderPath);
 
-      const screenshotFile =
-        files.find(file =>
-          file.endsWith(".png")
-        );
+      const screenshotPath =
+        findArtifact(folderPath, ".png");
 
-      const videoFile =
-        files.find(file =>
-          file.endsWith(".webm")
-        );
+      const videoPath =
+        findArtifact(folderPath, ".webm");
 
-      const traceFile =
-        files.find(file =>
-          file.endsWith(".zip")
-        );
+      const tracePath =
+        findArtifact(folderPath, ".zip");
 
       return {
 
@@ -113,18 +129,18 @@ router.get("/", authMiddleware, async (req: AuthRequest, res) => {
           stats.birthtime,
 
         screenshot:
-          screenshotFile
-            ? `https://ai-qa-agent-1.onrender.com/test-results/${folder}/${nestedFolders[0]}/${screenshotFile}`
+          screenshotPath
+            ? buildUrl(screenshotPath)
             : null,
 
         video:
-          videoFile
-            ? `https://ai-qa-agent-1.onrender.com/test-results/${folder}/${nestedFolders[0]}/${videoFile}`
+          videoPath
+            ? buildUrl(videoPath)
             : null,
 
         trace:
-          traceFile
-            ? `https://ai-qa-agent-1.onrender.com/test-results/${folder}/${nestedFolders[0]}/${traceFile}`
+          tracePath
+            ? buildUrl(tracePath)
             : null,
 
       };

@@ -3,6 +3,7 @@ import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 import path from "path";
+import fs from "fs";
 import prisma from "./config/database";
 import aiRoutes from "./routes/ai.routes";
 import authRoutes from "./routes/auth.routes";
@@ -118,7 +119,15 @@ app.use(express.static(publicDir));
  * Serve Dashboard UI
  */
 app.get("/", (_req: Request, res: Response) => {
-  res.sendFile(path.join(publicDir, "index.html"));
+  const indexPath = path.join(publicDir, "index.html");
+  if (fs.existsSync(indexPath)) {
+    return res.sendFile(indexPath);
+  }
+
+  return res.status(200).json({
+    success: true,
+    message: "AI QA Agent API",
+  });
 });
 
 app.use(

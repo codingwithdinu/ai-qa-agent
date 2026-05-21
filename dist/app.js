@@ -8,6 +8,7 @@ const cors_1 = __importDefault(require("cors"));
 const helmet_1 = __importDefault(require("helmet"));
 const morgan_1 = __importDefault(require("morgan"));
 const path_1 = __importDefault(require("path"));
+const fs_1 = __importDefault(require("fs"));
 const database_1 = __importDefault(require("./config/database"));
 const ai_routes_1 = __importDefault(require("./routes/ai.routes"));
 const auth_routes_1 = __importDefault(require("./routes/auth.routes"));
@@ -97,7 +98,14 @@ app.use(express_1.default.static(publicDir));
  * Serve Dashboard UI
  */
 app.get("/", (_req, res) => {
-    res.sendFile(path_1.default.join(publicDir, "index.html"));
+    const indexPath = path_1.default.join(publicDir, "index.html");
+    if (fs_1.default.existsSync(indexPath)) {
+        return res.sendFile(indexPath);
+    }
+    return res.status(200).json({
+        success: true,
+        message: "AI QA Agent API",
+    });
 });
 app.use((0, express_session_1.default)({
     secret: process.env.JWT_SECRET,
