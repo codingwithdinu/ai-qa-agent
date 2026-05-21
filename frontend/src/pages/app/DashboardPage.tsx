@@ -55,10 +55,9 @@ export function DashboardPage() {
         recorderMode !== "server";
     const apiBaseUrl =
         (import.meta.env.VITE_API_URL ||
-            window.location.origin).replace(
-                /\/$/,
-                ""
-            );
+            window.location.origin)
+            .replace(/\/$/, "")
+            .replace(/\/api$/, "");
     const [data, setData] =
         useState<DashboardDataState>({
             dashboardStats: [],
