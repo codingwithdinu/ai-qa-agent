@@ -12,6 +12,7 @@ import { useToast } from '../../context/ToastContext'
 import type { RecordingStep } from '../../types/platform'
 import { getRecordings } from '../../services/dashboard.service'
 import api from '../../api/client'
+import { sendRecorderMessage } from '../../utils/extensionRecorder'
 
 interface RecordingDataState {
   recordingSteps: RecordingStep[]
@@ -24,6 +25,11 @@ export function RecordingPage() {
   const [recording, setRecording] = useState(false)
   const [recordingId, setRecordingId] = useState('')
   const [recordingUrl, setRecordingUrl] = useState('')
+  const recorderMode =
+    import.meta.env.VITE_RECORDER_MODE ||
+    "client";
+  const clientMode =
+    recorderMode !== "server";
 
   const exportJSON = () => {
 
@@ -156,7 +162,11 @@ export function RecordingPage() {
                         }
                       )
                       
-                    chrome.storage.local.clear()
+                    if (clientMode) {
+                      await sendRecorderMessage({
+                        type: "STOP_RECORDING",
+                      })
+                    }
 
 
                     const stopResult =

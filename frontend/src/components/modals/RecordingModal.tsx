@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useAppContext } from "../../context/AppContext";
 import api from "../../api/client";
+import { sendRecorderMessage } from "../../utils/extensionRecorder";
 
 interface RecordingModalProps {
   open: boolean;
@@ -58,28 +59,41 @@ export function RecordingModal({
           );
 
         const result = response.data
-        
-        chrome.storage.local.set({
-          recording: true,
-          recordingId: result.recordingId,
-        })
-      
-
-
-        try {
-
-        } catch (error: any) {
-
-          console.log(
-            error.response?.data
-          );
-
-        }
 
         localStorage.setItem(
           "recordingId",
           result.recordingId
         );
+
+        if (clientMode) {
+          try {
+            await sendRecorderMessage({
+              type: "START_RECORDING",
+              recordingId: result.recordingId,
+              url,
+            });
+          } catch (error: any) {
+            try {
+              await api.post(
+                "/record/stop",
+                {
+                  recordingId:
+                    result.recordingId,
+                }
+              );
+            } catch (stopError) {
+              console.error(
+                stopError
+              );
+            }
+
+            setError(
+              error?.message ||
+                "Recorder extension failed"
+            );
+            return;
+          }
+        }
 
         onRecordingStarted(
           result.recordingId,

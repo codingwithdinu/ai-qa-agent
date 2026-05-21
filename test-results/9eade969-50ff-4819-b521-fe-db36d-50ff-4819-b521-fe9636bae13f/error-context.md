@@ -1,0 +1,185 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: 9eade969-50ff-4819-b521-fe9636bae13f.spec.ts >> 9eade969-50ff-4819-b521-fe9636bae13f
+- Location: generated-tests\9eade969-50ff-4819-b521-fe9636bae13f.spec.ts:9:5
+
+# Error details
+
+```
+Tearing down "context" exceeded the test timeout of 30000ms.
+```
+
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - navigation [ref=e6]:
+      - link "Sophia Edu & IT Solutions logo Sophia Edu & IT Solutions Sophia Edu & IT Solutions" [ref=e7] [cursor=pointer]:
+        - /url: /
+        - img "Sophia Edu & IT Solutions logo" [ref=e8]
+        - generic [ref=e9]:
+          - generic [ref=e10]: Sophia Edu & IT Solutions
+          - generic [ref=e11]: Sophia Edu & IT Solutions
+      - list [ref=e12]:
+        - listitem [ref=e13]:
+          - link "Home" [ref=e14] [cursor=pointer]:
+            - /url: /
+        - listitem [ref=e15]:
+          - link "About" [ref=e16] [cursor=pointer]:
+            - /url: /about
+        - listitem [ref=e17]:
+          - link "Services" [ref=e18] [cursor=pointer]:
+            - /url: /services
+        - listitem [ref=e19]:
+          - link "Internship" [ref=e20] [cursor=pointer]:
+            - /url: /internship
+        - listitem [ref=e21]:
+          - link "Contact" [ref=e22] [cursor=pointer]:
+            - /url: /contact
+      - link "Get Started" [ref=e24] [cursor=pointer]:
+        - /url: /contact
+  - main [ref=e25]:
+    - generic [ref=e28]:
+      - generic [ref=e29]:
+        - img [ref=e30]
+        - text: AI-Powered Solutions
+      - heading "Empowering Businesses & Students with AI-Driven Technology Solutions" [level=1] [ref=e32]
+      - paragraph [ref=e33]: We provide AI solutions, software development, digital services, internships, and modern education programs.
+      - link "Get Started" [ref=e35] [cursor=pointer]:
+        - /url: /contact
+        - text: Get Started
+        - img [ref=e36]
+    - generic [ref=e39]:
+      - paragraph [ref=e40]: Powering teams & learners across the globe
+      - generic [ref=e41]:
+        - img "MyCivic" [ref=e42]
+        - img "iSTART" [ref=e43]
+        - img "MSME" [ref=e44]
+    - generic [ref=e46]:
+      - generic [ref=e47]:
+        - generic [ref=e48]: What we do
+        - heading "Premium IT Services" [level=2] [ref=e50]
+        - paragraph [ref=e51]: Full-stack digital expertise.
+      - generic [ref=e52]:
+        - generic [ref=e53]:
+          - img [ref=e55]
+          - heading "AI / ML Solutions" [level=3] [ref=e65]
+          - paragraph [ref=e66]: Custom AI models that move the needle.
+        - generic [ref=e67]:
+          - img [ref=e69]
+          - heading "AI Powered SaaS Product" [level=3] [ref=e74]
+          - paragraph [ref=e75]: End-to-end SaaS products powered by AI technology.
+        - generic [ref=e76]:
+          - img [ref=e78]
+          - heading "Chatbots & Automation" [level=3] [ref=e81]
+          - paragraph [ref=e82]: GPT-powered assistants & workflows.
+        - generic [ref=e83]:
+          - img [ref=e85]
+          - heading "AI Integrated Web Development" [level=3] [ref=e89]
+          - paragraph [ref=e90]: AI-powered websites with intelligent features & smart automation.
+        - generic [ref=e91]:
+          - img [ref=e93]
+          - heading "AI Integrated App Development" [level=3] [ref=e95]
+          - paragraph [ref=e96]: Mobile apps enhanced with AI capabilities & machine learning.
+      - link "View all services" [ref=e98] [cursor=pointer]:
+        - /url: /services
+        - text: View all services
+        - img [ref=e99]
+    - generic [ref=e105]:
+      - heading "Ready to build something extraordinary?" [level=2] [ref=e106]
+      - paragraph [ref=e107]: Whether you're a startup, enterprise, or student — let's create the future together.
+      - link "Talk to us" [ref=e109] [cursor=pointer]:
+        - /url: /contact
+        - text: Talk to us
+        - img [ref=e110]
+      - generic [ref=e112]:
+        - generic [ref=e113]:
+          - img [ref=e114]
+          - text: Free consultation
+        - generic [ref=e117]:
+          - img [ref=e118]
+          - text: Custom software solutions
+        - generic [ref=e121]:
+          - img [ref=e122]
+          - text: Dedicated support
+    - generic [ref=e126]:
+      - generic [ref=e127]:
+        - generic [ref=e128]: Loved by clients & students
+        - heading "What people are saying" [level=2] [ref=e130]
+      - generic [ref=e131]:
+        - generic [ref=e132]:
+          - img [ref=e133]
+          - paragraph [ref=e136]: "\"The mentorship and live projects gave me real confidence.\""
+          - generic [ref=e137]:
+            - generic [ref=e138]: Aarav Mehta
+            - generic [ref=e139]: Student · AI Internship
+        - generic [ref=e140]:
+          - img [ref=e141]
+          - paragraph [ref=e144]: "\"Sophia shipped our MVP in record time.\""
+          - generic [ref=e145]:
+            - generic [ref=e146]: Priya Sharma
+            - generic [ref=e147]: CTO, FinNova
+        - generic [ref=e148]:
+          - img [ref=e149]
+          - paragraph [ref=e152]: "\"Their AI automation cut our support load by 60%.\""
+          - generic [ref=e153]:
+            - generic [ref=e154]: Rahul Verma
+            - generic [ref=e155]: Founder, RetailHub
+  - contentinfo [ref=e156]:
+    - generic [ref=e157]:
+      - generic [ref=e158]:
+        - generic [ref=e159]:
+          - link "Sophia Edu & IT Solutions Sophia Edu & IT Solutions" [ref=e160] [cursor=pointer]:
+            - /url: /
+            - img "Sophia Edu & IT Solutions" [ref=e161]
+            - generic [ref=e162]: Sophia Edu & IT Solutions
+          - paragraph [ref=e163]: Empowering businesses & students with AI-driven technology solutions and modern education programs.
+          - link "linkedin" [ref=e165] [cursor=pointer]:
+            - /url: https://www.linkedin.com/company/sophia-edu-it-solutions/posts/?feedView=all
+            - img [ref=e166]
+        - generic [ref=e170]:
+          - heading "Services" [level=4] [ref=e171]
+          - list [ref=e172]:
+            - listitem [ref=e173]: AI / ML Solutions
+            - listitem [ref=e174]: AI Powered SaaS Product
+            - listitem [ref=e175]: Chatbots & Automation
+            - listitem [ref=e176]: AI Integrated Web Development
+            - listitem [ref=e177]: AI Integrated App Development
+        - generic [ref=e178]:
+          - heading "Quick Links" [level=4] [ref=e179]
+          - list [ref=e180]:
+            - listitem [ref=e181]:
+              - link "About" [ref=e182] [cursor=pointer]:
+                - /url: /about
+            - listitem [ref=e183]:
+              - link "Internship" [ref=e184] [cursor=pointer]:
+                - /url: /internship
+            - listitem [ref=e185]:
+              - link "Contact" [ref=e186] [cursor=pointer]:
+                - /url: /contact
+        - generic [ref=e187]:
+          - heading "Get in touch" [level=4] [ref=e188]
+          - list [ref=e189]:
+            - listitem [ref=e190]:
+              - img [ref=e191]
+              - text: info@sophia.edu-it.in
+            - listitem [ref=e194]:
+              - img [ref=e195]
+              - text: +91 94145 61643
+            - listitem [ref=e197]:
+              - img [ref=e198]
+              - text: Jodhpur, Rajasthan, India
+      - generic [ref=e201]:
+        - paragraph [ref=e202]: © 2026 Sophia Edu & IT Solutions. All rights reserved.
+        - paragraph [ref=e203]: Crafted with AI · Built for the future.
+  - link "Chat on WhatsApp" [ref=e204] [cursor=pointer]:
+    - /url: https://wa.me/919414561643
+    - img [ref=e207]
+```

@@ -15,6 +15,7 @@ import { RecordingModal } from "../../components/modals/RecordingModal";
 import { useToast } from '../../context/ToastContext'
 import api from "../../api/client";
 import { socket } from "../../services/socket";
+import { sendRecorderMessage } from "../../utils/extensionRecorder";
 
 
 
@@ -279,6 +280,11 @@ export function DashboardPage() {
                                                         recordingId,
                                                     }
                                                 );
+                                                if (clientRecorderEnabled) {
+                                                    await sendRecorderMessage({
+                                                        type: "STOP_RECORDING",
+                                                    });
+                                                }
 
                                                 setRecording(false)
 
