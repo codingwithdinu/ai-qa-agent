@@ -68,7 +68,8 @@ function App() {
           <Route index element={<Navigate to="dashboard" replace />} />
         </Route>
 
-        <Route path="*" element={<Navigate to="/app/dashboard" replace />} />
+        <Route path="/" element={<Navigate to="/signup" replace />} />
+        <Route path="*" element={<Navigate to="/signup" replace />} />
       </Routes>
     </AppProvider >
   )
