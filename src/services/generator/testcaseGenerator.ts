@@ -12,8 +12,9 @@ export async function generateTestCaseFile(recordingId: string, format: "typescr
 			throw new Error("Recording not found");
 		}
 
-		const events = JSON.parse(recording.events) as any[];
-
+		const events = Array.isArray(recording.events)
+			? recording.events
+			: []
 		let testCode = "";
 
 		if (format === "typescript") {

@@ -4,6 +4,8 @@ import fs from "fs";
 import { v4 as uuid } from "uuid";
 import prisma from "../../config/database";
 import { chromium } from "playwright";
+import { RecordingEvent }
+  from "../../types/recording.types";
 
 export async function runRecording(recordingId: string) {
   const rec = await prisma.recording.findUnique({ where: { id: recordingId } });
@@ -22,7 +24,12 @@ export async function runRecording(recordingId: string) {
   let success = true;
 
   try {
-    const events = JSON.parse(rec.events || "[]") as any[];
+    const events =
+      (
+        Array.isArray(rec.events)
+          ? rec.events
+          : []
+      ) as unknown as RecordingEvent[];
 
     for (let i = 0; i < events.length; i++) {
       const ev = events[i];

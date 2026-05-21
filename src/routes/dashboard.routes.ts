@@ -23,14 +23,11 @@ router.get("/", authMiddleware, async (req: AuthRequest, res) => {
 
   const allEvents =
     recordings.flatMap((r) => {
-      try {
-        return JSON.parse(
-          r.events || "[]"
-        );
 
-      } catch {
-        return [];
-      }
+      return Array.isArray(r.events)
+        ? r.events
+        : [];
+
     });
 
   const recordingSteps =

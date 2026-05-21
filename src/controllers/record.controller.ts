@@ -33,7 +33,7 @@ export async function createRecording(req: AuthRequest, res: Response) {
         sessionId:
           sessionId || null,
         events:
-          JSON.stringify(events),
+          events,
         userId:
           req.userId!,
         workspaceId:
@@ -44,7 +44,7 @@ export async function createRecording(req: AuthRequest, res: Response) {
     success: true,
     data: {
       ...created,
-      events: JSON.parse(created.events),
+      events: created.events,
     },
   });
 }
@@ -69,7 +69,7 @@ export async function listRecordings(req: AuthRequest, res: Response) {
     success: true,
     data: recs.map((recording: Recording) => ({
       ...recording,
-      events: JSON.parse(recording.events),
+      events: recording.events,
     })),
   });
 }

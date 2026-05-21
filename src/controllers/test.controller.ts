@@ -51,7 +51,12 @@ export async function generateTest(req: Request, res: Response) {
       });
     }
 
-    const events = JSON.parse(recording.events);
+    const events =
+      (
+        Array.isArray(recording.events)
+          ? recording.events
+          : []
+      ) as any[];
 
     const code = await generatorService.generatePlaywrightCode(
       events,
@@ -103,40 +108,40 @@ export async function executeTest(req: Request, res: Response) {
 
     healingHistory.unshift({
 
-  id:
-    crypto.randomUUID(),
+      id:
+        crypto.randomUUID(),
 
-  page:
-    recordingId,
+      page:
+        recordingId,
 
-  originalSelector:
-    "#loginBtn",
+      originalSelector:
+        "#loginBtn",
 
-  healedSelector:
-    '[data-testid="login-button"]',
+      healedSelector:
+        '[data-testid="login-button"]',
 
-  confidence:
-    Math.floor(
-      80 + Math.random() * 20
-    ),
+      confidence:
+        Math.floor(
+          80 + Math.random() * 20
+        ),
 
-  domSimilarity:
-    Math.floor(
-      75 + Math.random() * 25
-    ),
+      domSimilarity:
+        Math.floor(
+          75 + Math.random() * 25
+        ),
 
-  reasoning:
-    `Execution completed for recording ${recordingId}`,
+      reasoning:
+        `Execution completed for recording ${recordingId}`,
 
-  impact:
-    result?.status === "PASSED"
-      ? "Recovered execution"
-      : "Selectors healed",
+      impact:
+        result?.status === "PASSED"
+          ? "Recovered execution"
+          : "Selectors healed",
 
-  status:
-    result?.status || "Healed",
+      status:
+        result?.status || "Healed",
 
-});
+    });
 
     return res.status(200).json({
       success: true,

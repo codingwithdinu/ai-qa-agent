@@ -2,7 +2,7 @@ import { Router } from "express";
 import prisma from "../config/database";
 import { generatePlaywrightCode } from "../services/generator/playwrightGenerator";
 import { authMiddleware, AuthRequest } from "../middleware/auth.middleware";
-
+import { RecordingEvent } from "../types/recording.types";
 
 const router = Router();
 
@@ -35,9 +35,11 @@ router.get("/", authMiddleware, async (req: AuthRequest, res) => {
       try {
 
         const events =
-          JSON.parse(
-            latestRecording.events || "[]"
-          );
+          (
+            Array.isArray(latestRecording.events)
+              ? latestRecording.events
+              : []
+          ) as unknown as RecordingEvent[];
 
         recordingSteps.push(
 
@@ -101,10 +103,13 @@ router.get("/", authMiddleware, async (req: AuthRequest, res) => {
 
             ? await generatePlaywrightCode(
 
-              JSON.parse(
-                latestRecording.events || "[]"
-              ),
-
+              (
+                Array.isArray(
+                  latestRecording.events
+                )
+                  ? latestRecording.events
+                  : []
+              ) as unknown as RecordingEvent[],
               latestRecording.id
             )
 

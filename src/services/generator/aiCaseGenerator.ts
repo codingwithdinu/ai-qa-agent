@@ -13,7 +13,13 @@ export async function generateAITestCases(recordingId: string, context?: string)
 			throw new Error("Recording not found");
 		}
 
-		const events = JSON.parse(recording.events) as RecordingEvent[];
+		const events =
+			(
+				Array.isArray(recording.events)
+					? recording.events
+					: []
+			) as unknown as RecordingEvent[];
+
 
 		let prompt = `Generate comprehensive test cases for the following user interactions:\n\n`;
 
@@ -50,7 +56,13 @@ export async function analyzeRecordingForStrategy(recordingId: string): Promise<
 			throw new Error("Recording not found");
 		}
 
-		const events = JSON.parse(recording.events) as RecordingEvent[];
+		const events =
+			(
+				Array.isArray(recording.events)
+					? recording.events
+					: []
+			) as unknown as RecordingEvent[];
+
 
 		const analysis = {
 			totalSteps: events.length,

@@ -35,7 +35,7 @@ export async function startRecording(
         url,
         userId,
         workspaceId,
-        events: JSON.stringify([]),
+        events: [],
       },
     });
 
@@ -177,12 +177,15 @@ export async function addEventToRecording(
       throw new Error("Recording not found");
     }
 
-    const events = JSON.parse(recording.events || "[]") as RecordingEvent[];
-    events.push(event);
+    const events = Array.isArray(recording.events)
+      ? [...recording.events]
+      : [];
+
+    events.push(event as any);
 
     await prisma.recording.update({
       where: { id: recordingId },
-      data: { events: JSON.stringify(events) },
+      data: { events },
     });
 
     logger.debug(`Event added to recording ${recordingId}`, event);
@@ -216,8 +219,9 @@ export async function stopRecording(
       throw new Error("Recording not found");
     }
 
-    const events = JSON.parse(recording.events || "[]") as RecordingEvent[];
-
+    const events = Array.isArray(recording.events)
+      ? recording.events
+      : [];
     logger.info(`Recording stopped: ${targetRecordingId}`, {
       totalEvents: events.length,
     });
@@ -261,7 +265,7 @@ export async function listRecordings(): Promise<any[]> {
     });
     return recordings.map((recording: any) => ({
       ...recording,
-      events: JSON.parse(recording.events || "[]"),
+      events: recording.events || [],
     }));
   } catch (error: any) {
     logger.error("Failed to list recordings", error);
