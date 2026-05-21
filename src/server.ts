@@ -7,6 +7,10 @@ import app from "./app";
 
 dotenv.config();
 
+if (!process.env.PLAYWRIGHT_BROWSERS_PATH) {
+    process.env.PLAYWRIGHT_BROWSERS_PATH = "0";
+}
+
 app.use("/api", routes);
 
 /**

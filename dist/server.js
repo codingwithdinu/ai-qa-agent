@@ -10,6 +10,9 @@ const socket_io_1 = require("socket.io");
 const routes_1 = __importDefault(require("./routes"));
 const app_1 = __importDefault(require("./app"));
 dotenv_1.default.config();
+if (!process.env.PLAYWRIGHT_BROWSERS_PATH) {
+    process.env.PLAYWRIGHT_BROWSERS_PATH = "0";
+}
 app_1.default.use("/api", routes_1.default);
 /**
  * Environment Variables

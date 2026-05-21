@@ -112,7 +112,12 @@ async function executeGeneratedTest(recordingId) {
                 Date.now().toString();
             console.log("🚀 Running Test:");
             console.log(command);
-            (0, child_process_1.exec)(command, async (error, stdout, stderr) => {
+            (0, child_process_1.exec)(command, {
+                env: {
+                    ...process.env,
+                    PLAYWRIGHT_BROWSERS_PATH: "0",
+                },
+            }, async (error, stdout, stderr) => {
                 console.log("========== STDOUT ==========");
                 console.log(stdout);
                 console.log("========== STDERR ==========");

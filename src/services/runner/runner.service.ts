@@ -141,7 +141,12 @@ export async function executeGeneratedTest(
       console.log("🚀 Running Test:");
       console.log(command);
 
-      exec(command, async (
+      exec(command, {
+        env: {
+          ...process.env,
+          PLAYWRIGHT_BROWSERS_PATH: "0",
+        },
+      }, async (
         error,
         stdout,
         stderr
