@@ -15,7 +15,7 @@ export function AuthLayout() {
         ? authContent.forgotPassword
         : authContent.login;
   return (
-    <div className="relative flex min-h-screen overflow-hidden bg-white px-4 py-8 text-black sm:px-6 lg:px-8">
+    <div className="relative flex min-h-screen overflow-hidden bg-slate-50 px-4 py-8 text-slate-900 sm:px-6 lg:px-8">
       <div className="relative mx-auto grid w-full max-w-7xl gap-8 lg:grid-cols-[1.1fr_0.9fr]">
         <motion.div initial={{ opacity: 0, x: -24 }} animate={{ opacity: 1, x: 0 }} className="hidden flex-col justify-between rounded-[2rem] border border-white/10 bg-white/5 p-10 backdrop-blur-xl lg:flex">
           <div>

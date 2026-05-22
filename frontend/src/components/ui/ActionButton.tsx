@@ -9,9 +9,9 @@ interface ActionButtonProps
 
 const variants: Record<NonNullable<ActionButtonProps['variant']>, string> = {
   primary:
-    'bg-cyan-400 text-slate-950 shadow-[0_0_35px_rgba(34,211,238,0.35)] hover:bg-cyan-300',
-  secondary: 'bg-white/10 text-white ring-1 ring-inset ring-white/10 hover:bg-white/15',
-  ghost: 'bg-transparent text-slate-300 hover:bg-white/5 hover:text-white',
+    'bg-sky-500 text-on-accent shadow-[0_12px_24px_rgba(14,165,233,0.25)] hover:bg-sky-600',
+  secondary: 'bg-white text-slate-700 ring-1 ring-inset ring-slate-200 hover:bg-slate-50',
+  ghost: 'bg-transparent text-slate-600 hover:bg-slate-100 hover:text-slate-900',
 }
 
 export function ActionButton({ className, variant = 'primary', ...props }: ActionButtonProps) {
