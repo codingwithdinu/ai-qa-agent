@@ -1,7 +1,6 @@
-import { ChevronDown, Bell, LogOut, Menu, Search, Settings, Sparkles, User } from 'lucide-react'
+import { ChevronDown, Bell, LogOut, Menu, Search, Sparkles, User } from 'lucide-react'
 import { useState } from 'react'
 import { useAppContext } from '../../context/AppContext'
-import { ThemeToggle } from '../ui/ThemeToggle'
 import { useNotifications } from "../../context/NotificationContext";
 
 
@@ -143,8 +142,6 @@ export function Topbar() {
 
             </select>
           </label>
-
-          <ThemeToggle />
 
           <div className="relative">
 

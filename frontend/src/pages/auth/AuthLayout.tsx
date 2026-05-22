@@ -15,10 +15,7 @@ export function AuthLayout() {
         ? authContent.forgotPassword
         : authContent.login;
   return (
-    <div className="relative flex min-h-screen overflow-hidden bg-slate-950 px-4 py-8 text-white sm:px-6 lg:px-8">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(34,211,238,0.16),_transparent_24%),radial-gradient(circle_at_bottom_right,_rgba(168,85,247,0.16),_transparent_30%)]" />
-      <div className="absolute inset-0 opacity-40 [background-image:linear-gradient(rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.04)_1px,transparent_1px)] [background-size:96px_96px]" />
-
+    <div className="relative flex min-h-screen overflow-hidden bg-white px-4 py-8 text-black sm:px-6 lg:px-8">
       <div className="relative mx-auto grid w-full max-w-7xl gap-8 lg:grid-cols-[1.1fr_0.9fr]">
         <motion.div initial={{ opacity: 0, x: -24 }} animate={{ opacity: 1, x: 0 }} className="hidden flex-col justify-between rounded-[2rem] border border-white/10 bg-white/5 p-10 backdrop-blur-xl lg:flex">
           <div>

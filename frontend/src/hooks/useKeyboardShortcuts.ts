@@ -2,11 +2,9 @@ import { useEffect } from 'react'
 
 interface ShortcutHandlers {
   openSearch: () => void
-  toggleAssistant: () => void
-  toggleTheme: () => void
 }
 
-export function useKeyboardShortcuts({ openSearch, toggleAssistant, toggleTheme }: ShortcutHandlers) {
+export function useKeyboardShortcuts({ openSearch }: ShortcutHandlers) {
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
@@ -29,22 +27,9 @@ export function useKeyboardShortcuts({ openSearch, toggleAssistant, toggleTheme 
           openSearch()
         }
       }
-
-      if (event.shiftKey && event.key.toLowerCase() === 'a') {
-        event.preventDefault()
-        toggleAssistant()
-      }
-
-      if (event.shiftKey && event.key.toLowerCase() === 't') {
-        event.preventDefault()
-        toggleTheme()
-      }
-      if (event.key === 'Escape') {
-        toggleAssistant();
-      }
     }
 
     window.addEventListener('keydown', onKeyDown)
     return () => window.removeEventListener('keydown', onKeyDown)
-  }, [openSearch, toggleAssistant, toggleTheme])
+  }, [openSearch])
 }

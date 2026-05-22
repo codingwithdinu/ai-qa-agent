@@ -12,7 +12,7 @@
 # Error details
 
 ```
-Tearing down "context" exceeded the test timeout of 30000ms.
+Test timeout of 30000ms exceeded.
 ```
 
 # Page snapshot
