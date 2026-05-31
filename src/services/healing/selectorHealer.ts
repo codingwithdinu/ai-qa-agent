@@ -225,10 +225,28 @@ export async function findBestSelector(
         /name="([^"]+)"/
       );
 
+    /**
+     * input[name="name"] or [data-testid=my-id]
+     */
+    const attributeMatch =
+      failedSelector.match(
+        /\[[^\]=]+=["']([^"']+)["']\]/
+      ) ??
+      failedSelector.match(
+        /\[[^\]=]+=([^\]]+)\]/
+      );
+
     if (roleMatch?.[1]) {
 
       keyword =
         roleMatch[1];
+
+    }
+
+    else if (attributeMatch?.[1]) {
+
+      keyword =
+        attributeMatch[1];
 
     }
 
