@@ -177,3 +177,7 @@ Backend:
 https://ai-qa-agent-1.onrender.com
 
 ---
+
+# License
+
+All Rights Reserved © 2026 Dinesh Patel
