@@ -17,9 +17,13 @@ export async function generatePlaywrightCode(
     (e) => e.type === "navigate"
   );
 
+  const fallbackUrl =
+    events.find((e) => e.url)?.url ||
+    "https://example.com";
+
   const targetUrl =
     navigateEvent?.url ||
-    "https://example.com";
+    fallbackUrl;
 
   let code = `
 import { test, expect } from '@playwright/test';
