@@ -165,49 +165,44 @@ export function AppProvider({ children }: PropsWithChildren) {
   }, [])
 
   useEffect(() => {
-    const eventSource =
-      new EventSource(
-        `${import.meta.env.VITE_API_URL}/logs`
-      );
+    // Live logs are optional; avoid opening an invalid URL if the backend
+    // origin has not been configured for this deployment.
+    const configuredApiUrl = import.meta.env.VITE_API_URL?.trim();
+    if (!configuredApiUrl) {
+      console.warn("VITE_API_URL is not configured; live logs are disabled.");
+      return;
+    }
+
+    const apiUrl = configuredApiUrl.replace(/\\/+$/, "");
+    const eventSource = new EventSource(`${apiUrl}/logs`);
     eventSource.onerror = () => {
-      console.error(
-        "SSE connection failed"
-      );
+      console.warn("Live log stream disconnected.");
       eventSource.close();
     };
     eventSource.onmessage = (event) => {
-      const log =
-        JSON.parse(event.data);
-      const activity: ActivityItem = {
-        id: Date.now().toString(),
-        title: log.level?.toUpperCase() || "LOG",
-        detail: log.message,
-        type: "pipeline",
-        status:
-          log.level === "error"
-            ? "warning"
-            : log.level === "success"
-              ? "success"
-              : "info",
-
-        actor:
-          log.actor ||
-          "System",
-
-        time:
-          new Date()
-            .toLocaleTimeString(),
-      };
-
-      setActivities((current) =>
-        [activity, ...current].slice(0, 10)
-      );
+      try {
+        const log = JSON.parse(event.data);
+        const activity: ActivityItem = {
+          id: Date.now().toString(),
+          title: log.level?.toUpperCase() || "LOG",
+          detail: log.message,
+          type: "pipeline",
+          status:
+            log.level === "error"
+              ? "warning"
+              : log.level === "success"
+                ? "success"
+                : "info",
+          actor: log.actor || "System",
+          time: new Date().toLocaleTimeString(),
+        };
+        setActivities((current) => [activity, ...current].slice(0, 10));
+      } catch (error) {
+        console.warn("Ignoring malformed live log event.", error);
+      }
     };
 
-    return () => {
-      eventSource.close();
-    };
-
+    return () => eventSource.close();
   }, []);
 
 
