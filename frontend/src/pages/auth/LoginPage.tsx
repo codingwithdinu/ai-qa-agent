@@ -67,11 +67,6 @@ export function LoginPage() {
         result.token
       );
 
-      console.log(
-        "TOKEN SAVED:",
-        result.token
-      );
-
       localStorage.setItem(
 
         "user",
