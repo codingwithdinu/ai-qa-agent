@@ -37,8 +37,6 @@ interface AppContextValue {
 
 const AppContext = createContext<AppContextValue | undefined>(undefined)
 
-
-
 export function AppProvider({ children }: PropsWithChildren) {
   const [workspaces, setWorkspaces] = useState<Workspace[]>([])
   const [projects, setProjects] = useState<ProjectSummary[]>([])
@@ -54,172 +52,97 @@ export function AppProvider({ children }: PropsWithChildren) {
   const [authLoading, setAuthLoading] = useState(true)
   const [navigationItems, setNavigationItems] = useState<NavigationItem[]>([])
 
-
-
   useEffect(() => {
     async function loadAppData() {
       try {
-        const data =
-          await getAppShellData();
-        let userWorkspaces: Workspace[] = [];
-        const savedUser =
-          localStorage.getItem(
-            "user"
-          );
+        const data = await getAppShellData()
+        let userWorkspaces: Workspace[] = []
+        const savedUser = localStorage.getItem("user")
 
         if (savedUser) {
-
-          const parsedUser =
-            JSON.parse(savedUser);
-
-          userWorkspaces =
-            parsedUser.workspaces?.map(
-              (item: any) => item.workspace
-            ) || [];
-
-          setWorkspaces(
-            userWorkspaces
-          );
-
-
-        }
-        setProjects(
-          data.projects
-        );
-        setNotifications(
-          data.notifications || []
-        );
-        setCommands(
-          data.searchCommands || []
-        );
-        setNavigationItems(
-          data.navigationItems || []
-        );
-        const savedWorkspace =
-          localStorage.getItem(
-            "selectedWorkspaceId"
-          );
-
-        setSelectedWorkspaceId(savedWorkspace || userWorkspaces?.[0]?.id || '');
-        setSelectedProjectId(
-          data.projects?.[0]?.id || ''
-        );
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    loadAppData();
-  }, []);
-
-
-  useEffect(() => {
-
-    async function loadUser() {
-
-      try {
-
-        const token =
-          localStorage.getItem(
-            "token"
-          )
-
-        if (!token) {
-
-          setAuthLoading(false)
-
-          return
-
+          const parsedUser = JSON.parse(savedUser)
+          userWorkspaces = parsedUser.workspaces?.map((item: any) => item.workspace) || []
+          setWorkspaces(userWorkspaces)
         }
 
-        const response =
-          await api.get(
-            "/auth/me"
-          )
+        setProjects(data.projects)
+        setNotifications(data.notifications || [])
+        setCommands(data.searchCommands || [])
+        setNavigationItems(data.navigationItems || [])
 
-        setUser(
-          response.data.user
-        )
-
+        const savedWorkspace = localStorage.getItem("selectedWorkspaceId")
+        setSelectedWorkspaceId(savedWorkspace || userWorkspaces?.[0]?.id || '')
+        setSelectedProjectId(data.projects?.[0]?.id || '')
       } catch (error) {
-
         console.error(error)
-
-        localStorage.removeItem(
-          "token"
-        )
-
-        localStorage.removeItem(
-          "user"
-        )
-
-      } finally {
-
-        setAuthLoading(false)
-
       }
-
     }
-
-    loadUser()
-
+    loadAppData()
   }, [])
 
   useEffect(() => {
-    // Live logs are optional; avoid opening an invalid URL if the backend
-    // origin has not been configured for this deployment.
-    const configuredApiUrl = import.meta.env.VITE_API_URL?.trim();
+    async function loadUser() {
+      try {
+        const token = localStorage.getItem("token")
+        if (!token) {
+          setAuthLoading(false)
+          return
+        }
+
+        const response = await api.get("/auth/me")
+        setUser(response.data.user)
+      } catch (error) {
+        console.error(error)
+        localStorage.removeItem("token")
+        localStorage.removeItem("user")
+      } finally {
+        setAuthLoading(false)
+      }
+    }
+    loadUser()
+  }, [])
+
+  useEffect(() => {
+    const configuredApiUrl = import.meta.env.VITE_API_URL?.trim()
     if (!configuredApiUrl) {
-      console.warn("VITE_API_URL is not configured; live logs are disabled.");
-      return;
+      console.warn("VITE_API_URL is not configured; live logs are disabled.")
+      return
     }
 
-    const apiUrl = configuredApiUrl.replace(/\\/+$/, "");
-    const eventSource = new EventSource(`${apiUrl}/logs`);
+    const origin = configuredApiUrl.replace(/\/+$/, "")
+    const apiUrl = origin.endsWith("/api") ? origin : `${origin}/api`
+    const eventSource = new EventSource(`${apiUrl}/logs`)
+
     eventSource.onerror = () => {
-      console.warn("Live log stream disconnected.");
-      eventSource.close();
-    };
+      console.warn("Live log stream disconnected.")
+      eventSource.close()
+    }
+
     eventSource.onmessage = (event) => {
       try {
-        const log = JSON.parse(event.data);
+        const log = JSON.parse(event.data)
         const activity: ActivityItem = {
           id: Date.now().toString(),
           title: log.level?.toUpperCase() || "LOG",
           detail: log.message,
           type: "pipeline",
-          status:
-            log.level === "error"
-              ? "warning"
-              : log.level === "success"
-                ? "success"
-                : "info",
+          status: log.level === "error" ? "warning" : log.level === "success" ? "success" : "info",
           actor: log.actor || "System",
           time: new Date().toLocaleTimeString(),
-        };
-        setActivities((current) => [activity, ...current].slice(0, 10));
+        }
+        setActivities((current) => [activity, ...current].slice(0, 10))
       } catch (error) {
-        console.warn("Ignoring malformed live log event.", error);
+        console.warn("Ignoring malformed live log event.", error)
       }
-    };
+    }
 
-    return () => eventSource.close();
-  }, []);
+    return () => eventSource.close()
+  }, [])
 
-
-
-  const setSelectedWorkspace = useCallback(
-    (workspaceId: string) => {
-      localStorage.setItem(
-        "selectedWorkspaceId",
-        workspaceId
-      )
-
-      setSelectedWorkspaceId(
-        workspaceId
-      )
-    },
-    []
-  )
+  const setSelectedWorkspace = useCallback((workspaceId: string) => {
+    localStorage.setItem("selectedWorkspaceId", workspaceId)
+    setSelectedWorkspaceId(workspaceId)
+  }, [])
 
   const setSelectedProject = useCallback((projectId: string) => {
     setSelectedProjectId(projectId)
@@ -227,6 +150,7 @@ export function AppProvider({ children }: PropsWithChildren) {
 
   const logout = useCallback(() => {
     localStorage.removeItem("token")
+    localStorage.removeItem("user")
     setUser(null)
     window.location.href = "/login"
   }, [])
@@ -247,42 +171,16 @@ export function AppProvider({ children }: PropsWithChildren) {
 
   const value = useMemo(
     () => ({
-      workspaces,
-      projects,
-      commands,
-      navigationItems,
-      selectedWorkspace,
-      setSelectedWorkspace,
-      selectedProject,
-      setSelectedProject,
-      activities,
-      notifications,
-      sidebarCollapsed,
-      toggleSidebar,
-      commandOpen,
-      setCommandOpen,
-      assistantOpen,
-      setAssistantOpen,
-      user,
-      setUser,
-      logout,
-      authLoading,
+      workspaces, projects, commands, navigationItems, selectedWorkspace,
+      setSelectedWorkspace, selectedProject, setSelectedProject, activities,
+      notifications, sidebarCollapsed, toggleSidebar, commandOpen, setCommandOpen,
+      assistantOpen, setAssistantOpen, user, setUser, logout, authLoading,
     }),
     [
-      activities,
-      assistantOpen,
-      navigationItems,
-      commandOpen,
-      commands,
-      notifications,
-      projects,
-      selectedProject,
-      selectedWorkspace,
-      setSelectedProject,
-      setSelectedWorkspace,
-      sidebarCollapsed,
-      toggleSidebar,
-      workspaces,
+      activities, assistantOpen, navigationItems, commandOpen, commands,
+      notifications, projects, selectedProject, selectedWorkspace,
+      setSelectedProject, setSelectedWorkspace, sidebarCollapsed,
+      toggleSidebar, workspaces, user, authLoading, logout,
     ],
   )
 
@@ -291,10 +189,8 @@ export function AppProvider({ children }: PropsWithChildren) {
 
 export function useAppContext() {
   const context = useContext(AppContext)
-
   if (!context) {
     throw new Error('useAppContext must be used within AppProvider')
   }
-
   return context
 }
