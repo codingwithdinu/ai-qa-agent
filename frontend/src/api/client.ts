@@ -1,9 +1,15 @@
 import axios from "axios";
 
-// Set VITE_API_URL in Vercel to the deployed backend origin
-// (for example, https://your-api.onrender.com).
+// Set VITE_API_URL in Vercel to the deployed backend origin,
+// for example https://your-api.onrender.com. The backend mounts
+// all application routes under /api.
 const configuredApiUrl = import.meta.env.VITE_API_URL?.trim();
-const apiBaseUrl = configuredApiUrl ? configuredApiUrl.replace(/\/+$/, "") : "";
+const normalizedOrigin = configuredApiUrl
+  ? configuredApiUrl.replace(/\/+$/, "")
+  : "";
+const apiBaseUrl = normalizedOrigin.endsWith("/api")
+  ? normalizedOrigin
+  : `${normalizedOrigin}/api`;
 
 const api = axios.create({
   baseURL: apiBaseUrl,
